@@ -22,3 +22,16 @@
   (it "returns the board with only the taken spaces"
   (should= {0 {:marked "x"}} (find-taken-spaces (mark-space (generate-new-board 3) 0 "x")))))
 
+(describe "board-full?"
+  (it "returns a false for a new board"
+    (should= false (board-full? (generate-new-board 3))))
+
+  (it "returns true for a board with no free spaces"
+    (should= true (board-full? {0 {:marked "x"}, 1 {:marked "x"}, 2 {:marked "x"}, 3 {:marked "x"}, 4 {:marked "x"}, 5 {:marked "x"}, 6 {:marked "x"}, 7 {:marked "x"}, 8 {:marked "x"}}))))
+
+(describe "space-free?"
+  (it "returns true if a space is empty"
+    (should= true (space-free? (generate-new-board 3) 0)))
+
+  (it "returns false if a space is taken"
+    (should= false (space-free? {0 {:marked "x"}, 1 {}, 2 {}, 3 {}, 4 {}, 5 {}, 6 {}, 7 {}, 8 {}} 0))))
