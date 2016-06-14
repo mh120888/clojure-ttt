@@ -17,3 +17,8 @@
 (describe "find-free-spaces"
   (it "returns the board with only the free spaces left"
     (should= {1 {}, 2 {}, 3 {}, 4 {}, 5 {}, 6 {}, 7 {}, 8 {}} (find-free-spaces (mark-space (generate-new-board 3) 0 "x")))))
+
+(describe "find-taken-spaces"
+  (it "returns the board with only the taken spaces"
+  (should= {0 {:marked "x"}} (find-taken-spaces (mark-space (generate-new-board 3) 0 "x")))))
+
