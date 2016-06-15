@@ -67,10 +67,18 @@
     (let [new-sum (+ 1 sum num-of-rows)]
       (cons sum (lazy-seq (top-left-to-bottom-right-coords new-sum (+ num-of-rows)))))))
 
+(defn top-right-to-bottom-left-coords
+    "Generates a lazy sequence of top right to bottom left coords"
+    ([num-of-rows] (top-right-to-bottom-left-coords (- num-of-rows 1) (- num-of-rows 1)))
+    ([current incrementer]
+      (let [next-num (+ current incrementer)]
+        (cons current (lazy-seq (top-right-to-bottom-left-coords next-num incrementer))))))
+
 (defn generate-diagonal-coords
   "Returns the winning coordinates for a diagonal win"
   [num-of-rows]
-  (take num-of-rows (top-left-to-bottom-right-coords num-of-rows)))
+  (concat (list (take num-of-rows (top-left-to-bottom-right-coords num-of-rows)))
+          (list (take num-of-rows (top-right-to-bottom-left-coords num-of-rows)))))
 
 (defn has-won?
   [board]
@@ -79,5 +87,5 @@
         horizontal-coords (partition num-of-rows spaces-on-board)
         vertical-coords (apply map list horizontal-coords)
         diagonal-coords (generate-diagonal-coords num-of-rows)
-        coords-to-check (concat horizontal-coords vertical-coords (list diagonal-coords))]
+        coords-to-check (concat horizontal-coords vertical-coords diagonal-coords)]
     (is-there-a-win? board num-of-rows spaces-on-board coords-to-check)))
