@@ -52,6 +52,12 @@
       (should= true (space-free? new-board 0)))
 
     (it "returns false if a space is taken"
-      (should= false (space-free? board-with-0-marked-with-x 0)))))
+      (should= false (space-free? board-with-0-marked-with-x 0))))
+
+  (describe "has-won?"
+    (it "returns false for an empty board"
+      (should= false (has-won? new-board)))
+    (it "returns true for a board with a horizontal win"
+    (should= true (has-won? {3 {:marked "x"}, 4 {:marked "x"}, 5 {:marked "x"}, 0 {:marked "o"}, 1 {}, 2 {}, 6 {}, 7 {}, 8 {}})))))
 
 (run-specs)

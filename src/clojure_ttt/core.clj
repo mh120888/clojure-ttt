@@ -42,3 +42,26 @@
   (if (space-free? board space)
     (assoc board space {:marked mark})
     board))
+
+(def not-empty? (complement empty?))
+
+(defn horizontal-win?
+  "Checks the board for a horizontal win"
+  [board num-of-rows spaces-on-board]
+    (loop [rows-left (partition num-of-rows spaces-on-board)
+           row-to-check (first rows-left)
+           found-win false]
+      (if (or found-win (empty? rows-left))
+        (if found-win
+          true
+          false)
+          (let [this-row-as-set (into #{} (vals (select-keys board (into [] (first rows-left)))))
+                is-this-a-win (and (not-empty? (first this-row-as-set))
+                                   (= 1 (count this-row-as-set)))]
+            (recur (rest rows-left) (first (rest rows-left)) is-this-a-win)))))
+
+(defn has-won?
+  [board]
+  (let [num-of-rows (int (java.lang.Math/sqrt (count board)))
+        spaces-on-board (range (count board))]
+        (horizontal-win? board num-of-rows spaces-on-board)))
