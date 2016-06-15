@@ -57,7 +57,16 @@
   (describe "has-won?"
     (it "returns false for an empty board"
       (should= false (has-won? new-board)))
+
+    (it "returns false for a board with a cat's game"
+      (should= false (has-won? {0 {:marked "x"}, 1 {:marked "o"}, 2 {:marked "x"},
+                                3 {:marked "o"}, 4 {:marked "x"}, 5 {:marked "o"},
+                                6 {:marked "x"}, 7 {:marked "o"}, 8 {:marked "x"}})))
+
     (it "returns true for a board with a horizontal win"
-    (should= true (has-won? {3 {:marked "x"}, 4 {:marked "x"}, 5 {:marked "x"}, 0 {:marked "o"}, 1 {}, 2 {}, 6 {}, 7 {}, 8 {}})))))
+      (should= true (has-won? {3 {:marked "x"}, 4 {:marked "x"}, 5 {:marked "x"}, 0 {:marked "o"}, 1 {}, 2 {}, 6 {}, 7 {}, 8 {}})))
+
+    (it "returns true for a board with a vertical win"
+      (should= true (has-won? {1 {:marked "x"}, 4 {:marked "x"}, 7 {:marked "x"}, 0 {:marked "o"}, 3 {}, 2 {}, 6 {}, 5 {}, 8 {}})))))
 
 (run-specs)

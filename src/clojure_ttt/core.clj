@@ -45,23 +45,27 @@
 
 (def not-empty? (complement empty?))
 
-(defn horizontal-win?
-  "Checks the board for a horizontal win"
-  [board num-of-rows spaces-on-board]
-    (loop [rows-left (partition num-of-rows spaces-on-board)
-           row-to-check (first rows-left)
+(defn is-there-a-win?
+  "Checks the board for a wins"
+  [board num-of-rows spaces-on-board coords-to-check]
+    (loop [coords-to-check coords-to-check
+           row-to-check (first coords-to-check)
            found-win false]
-      (if (or found-win (empty? rows-left))
+      (if (or found-win (empty? coords-to-check))
         (if found-win
           true
           false)
-          (let [this-row-as-set (into #{} (vals (select-keys board (into [] (first rows-left)))))
+          (let [this-row-as-set (into #{} (vals (select-keys board (into [] (first coords-to-check)))))
                 is-this-a-win (and (not-empty? (first this-row-as-set))
                                    (= 1 (count this-row-as-set)))]
-            (recur (rest rows-left) (first (rest rows-left)) is-this-a-win)))))
+            (recur (rest coords-to-check) (first (rest coords-to-check)) is-this-a-win)))))
 
 (defn has-won?
   [board]
   (let [num-of-rows (int (java.lang.Math/sqrt (count board)))
-        spaces-on-board (range (count board))]
-        (horizontal-win? board num-of-rows spaces-on-board)))
+        spaces-on-board (range (count board))
+        horizontal-coords (partition num-of-rows spaces-on-board)
+        vertical-coords (apply map list horizontal-coords)
+        coords-to-check (concat horizontal-coords vertical-coords)]
+    (is-there-a-win? board num-of-rows spaces-on-board coords-to-check)
+    ))
