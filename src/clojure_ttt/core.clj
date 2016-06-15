@@ -60,12 +60,24 @@
                                    (= 1 (count this-row-as-set)))]
             (recur (rest coords-to-check) (first (rest coords-to-check)) is-this-a-win)))))
 
+(defn top-left-to-bottom-right-coords
+  "Generates a lazy sequence of top left to bottom right coords"
+  ([num-of-rows] (top-left-to-bottom-right-coords 0 num-of-rows))
+  ([sum num-of-rows]
+    (let [new-sum (+ 1 sum num-of-rows)]
+      (cons sum (lazy-seq (top-left-to-bottom-right-coords new-sum (+ num-of-rows)))))))
+
+(defn generate-diagonal-coords
+  "Returns the winning coordinates for a diagonal win"
+  [num-of-rows]
+  (take num-of-rows (top-left-to-bottom-right-coords num-of-rows)))
+
 (defn has-won?
   [board]
   (let [num-of-rows (int (java.lang.Math/sqrt (count board)))
         spaces-on-board (range (count board))
         horizontal-coords (partition num-of-rows spaces-on-board)
         vertical-coords (apply map list horizontal-coords)
-        coords-to-check (concat horizontal-coords vertical-coords)]
-    (is-there-a-win? board num-of-rows spaces-on-board coords-to-check)
-    ))
+        diagonal-coords (generate-diagonal-coords num-of-rows)
+        coords-to-check (concat horizontal-coords vertical-coords (list diagonal-coords))]
+    (is-there-a-win? board num-of-rows spaces-on-board coords-to-check)))
