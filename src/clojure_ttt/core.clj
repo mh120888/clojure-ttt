@@ -1,10 +1,24 @@
 (ns clojure-ttt.core)
 
+(declare space-free? look-up-space generate-diagonal-coords is-there-a-win? not-empty? top-left-to-bottom-right-coords top-right-to-bottom-left-coords)
+
 (defn generate-new-board
   "Creates a new game board with the specified number of rows"
   [num-of-rows]
   (let [num-of-spaces (* num-of-rows num-of-rows)]
     (reduce #(assoc %1 %2 {}) {} (take num-of-spaces (range)))))
+
+(defn mark-space
+  "Marks a board at the given space and returns the new board"
+  [board space mark]
+  (if (space-free? board space)
+    (assoc board space {:marked mark})
+    board))
+
+(defn space-free?
+  "Tests whether a particular space is free"
+  [board space]
+  (nil? (look-up-space board space)))
 
 (defn look-up-space
   "Returns the marker with which a space is marked, or nil if it is unmarked"
@@ -31,19 +45,15 @@
   [board]
   (empty? (find-free-spaces board)))
 
-(defn space-free?
-  "Tests whether a particular space is free"
-  [board space]
-  (nil? (look-up-space board space)))
-
-(defn mark-space
-  "Marks a board at the given space and returns the new board"
-  [board space mark]
-  (if (space-free? board space)
-    (assoc board space {:marked mark})
-    board))
-
-(def not-empty? (complement empty?))
+(defn has-won?
+  [board]
+  (let [num-of-rows (int (java.lang.Math/sqrt (count board)))
+        spaces-on-board (range (count board))
+        horizontal-coords (partition num-of-rows spaces-on-board)
+        vertical-coords (apply map list horizontal-coords)
+        diagonal-coords (generate-diagonal-coords num-of-rows)
+        coords-to-check (concat horizontal-coords vertical-coords diagonal-coords)]
+    (is-there-a-win? board num-of-rows spaces-on-board coords-to-check)))
 
 (defn is-there-a-win?
   "Checks the board for a wins"
@@ -60,19 +70,7 @@
                                    (= 1 (count this-row-as-set)))]
             (recur (rest coords-to-check) (first (rest coords-to-check)) is-this-a-win)))))
 
-(defn top-left-to-bottom-right-coords
-  "Generates a lazy sequence of top left to bottom right coords"
-  ([num-of-rows] (top-left-to-bottom-right-coords 0 num-of-rows))
-  ([sum num-of-rows]
-    (let [new-sum (+ 1 sum num-of-rows)]
-      (cons sum (lazy-seq (top-left-to-bottom-right-coords new-sum (+ num-of-rows)))))))
-
-(defn top-right-to-bottom-left-coords
-    "Generates a lazy sequence of top right to bottom left coords"
-    ([num-of-rows] (top-right-to-bottom-left-coords (- num-of-rows 1) (- num-of-rows 1)))
-    ([current incrementer]
-      (let [next-num (+ current incrementer)]
-        (cons current (lazy-seq (top-right-to-bottom-left-coords next-num incrementer))))))
+(def not-empty? (complement empty?))
 
 (defn generate-diagonal-coords
   "Returns the winning coordinates for a diagonal win"
@@ -80,12 +78,16 @@
   (concat (list (take num-of-rows (top-left-to-bottom-right-coords num-of-rows)))
           (list (take num-of-rows (top-right-to-bottom-left-coords num-of-rows)))))
 
-(defn has-won?
-  [board]
-  (let [num-of-rows (int (java.lang.Math/sqrt (count board)))
-        spaces-on-board (range (count board))
-        horizontal-coords (partition num-of-rows spaces-on-board)
-        vertical-coords (apply map list horizontal-coords)
-        diagonal-coords (generate-diagonal-coords num-of-rows)
-        coords-to-check (concat horizontal-coords vertical-coords diagonal-coords)]
-    (is-there-a-win? board num-of-rows spaces-on-board coords-to-check)))
+(defn top-left-to-bottom-right-coords
+  "Generates a lazy sequence of top left to bottom right coords"
+  ([num-of-rows] (top-left-to-bottom-right-coords 0 num-of-rows))
+  ([current incrementer]
+    (let [next-num (+ 1 current incrementer)]
+      (cons current (lazy-seq (top-left-to-bottom-right-coords next-num (+ incrementer)))))))
+
+(defn top-right-to-bottom-left-coords
+    "Generates a lazy sequence of top right to bottom left coords"
+    ([num-of-rows] (top-right-to-bottom-left-coords (- num-of-rows 1) (- num-of-rows 1)))
+    ([current incrementer]
+      (let [next-num (+ current incrementer)]
+        (cons current (lazy-seq (top-right-to-bottom-left-coords next-num incrementer))))))
