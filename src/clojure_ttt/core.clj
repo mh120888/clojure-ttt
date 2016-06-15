@@ -11,11 +11,6 @@
   [board space]
   (get-in board [space :marked]))
 
-(defn mark-space
-  "Marks a board at the given space and returns the new board"
-  [board space mark]
-  (assoc board space {:marked mark}))
-
 (defn find-free-spaces
   "Takes a board and returns a new board with only the free spaces"
   [board]
@@ -40,3 +35,10 @@
   "Tests whether a particular space is free"
   [board space]
   (nil? (look-up-space board space)))
+
+(defn mark-space
+  "Marks a board at the given space and returns the new board"
+  [board space mark]
+  (if (space-free? board space)
+    (assoc board space {:marked mark})
+    board))

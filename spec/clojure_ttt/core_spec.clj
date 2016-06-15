@@ -16,6 +16,9 @@
       (should= nil (look-up-space new-board 0))))
 
   (describe "mark-space"
+    (it "does not mark the board if the given space is already taken"
+      (should= board-with-0-marked-with-x (mark-space board-with-0-marked-with-x 0 "o")))
+
     (it "marks a space with the given mark"
       (should= board-with-0-marked-with-x (mark-space new-board 0 "x"))))
 
