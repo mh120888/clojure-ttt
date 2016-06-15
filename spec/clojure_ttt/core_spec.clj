@@ -24,8 +24,18 @@
       (should= {1 {}, 2 {}, 3 {}, 4 {}, 5 {}, 6 {}, 7 {}, 8 {}} (find-free-spaces (mark-space new-board 0 "x")))))
 
   (describe "find-taken-spaces"
+    (it "returns an empty map when called with a new board"
+      (should= {} (find-taken-spaces new-board)))
+
     (it "returns the board with only the taken spaces"
       (should= {0 {:marked "x"}} (find-taken-spaces (mark-space new-board 0 "x")))))
+
+  (describe "find-spaces-taken-by"
+    (it "returns an empty map if there are no spaces taken by the given marker"
+      (should= {} (find-spaces-taken-by new-board "x")))
+
+    (it "returns the board with only the spaces taken by the given marker"
+      (should= {0 {:marked "x"}} (find-spaces-taken-by (mark-space new-board 0 "x") "x"))))
 
   (describe "board-full?"
     (it "returns a false for a new board"

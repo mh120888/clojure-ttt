@@ -21,6 +21,10 @@
   [board]
   (into {} (filter #(identity (look-up-space board (first %))) board)))
 
+(defn find-spaces-taken-by
+  [board marker]
+  (into {} (filter #(= marker (look-up-space board (first %))) board)))
+
 (defn board-full?
   [board]
   (empty? (find-free-spaces board)))
