@@ -6,13 +6,13 @@
   "Creates a new game board with the specified number of rows"
   [num-of-rows]
   (let [num-of-spaces (* num-of-rows num-of-rows)]
-    (reduce #(assoc %1 %2 {}) {} (take num-of-spaces (range)))))
+    (reduce #(assoc %1 %2 {}) {} (range num-of-spaces))))
 
 (defn mark-space
   "Marks a board at the given space and returns the new board"
   [board space mark]
   (if (space-free? board space)
-    (assoc board space {:marked mark})
+    (merge board {space {:marked mark}})
     board))
 
 (defn space-free?
@@ -82,12 +82,12 @@
   "Generates a lazy sequence of top left to bottom right coords"
   ([num-of-rows] (top-left-to-bottom-right-coords 0 num-of-rows))
   ([current incrementer]
-    (let [next-num (+ 1 current incrementer)]
-      (cons current (lazy-seq (top-left-to-bottom-right-coords next-num (+ incrementer)))))))
+    (let [next-num (+ (inc current) incrementer)]
+      (cons current (lazy-seq (top-left-to-bottom-right-coords next-num incrementer))))))
 
 (defn top-right-to-bottom-left-coords
     "Generates a lazy sequence of top right to bottom left coords"
-    ([num-of-rows] (top-right-to-bottom-left-coords (- num-of-rows 1) (- num-of-rows 1)))
+    ([num-of-rows] (top-right-to-bottom-left-coords (dec num-of-rows) (dec num-of-rows)))
     ([current incrementer]
       (let [next-num (+ current incrementer)]
         (cons current (lazy-seq (top-right-to-bottom-left-coords next-num incrementer))))))
@@ -98,7 +98,7 @@
   (let [num-of-rows (int (java.lang.Math/sqrt (count board)))]
   (doseq [n (range (count board))]
     (let [current-marker (get-current-marker-for-console-display board n)]
-    (if (integer? (/ (+ n 1) num-of-rows))
+    (if (integer? (/ (inc n) num-of-rows))
       (print (str current-marker "\n"))
       (print (str current-marker " "))))))
 )
