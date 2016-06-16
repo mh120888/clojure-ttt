@@ -36,8 +36,6 @@
       (should="Where would you like to play?\n" (with-out-str (with-in-str "3" (get-user-input message)))))
 
     (it "returns the move specified by the user"
-      (should= "3" (with-in-str "3" (get-user-input message)))))
-
-  )
+      (should= "3" (with-in-str "3" (get-user-input message))))))
 
 (run-specs)
