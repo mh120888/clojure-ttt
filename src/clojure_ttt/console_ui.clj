@@ -21,3 +21,10 @@
   (if (look-up-space board space)
     (look-up-space board space)
     "_"))
+
+(defn get-user-input
+  "Gets input from the user after displaying a message"
+  [message]
+  (do
+    (println message)
+    (read-line)))

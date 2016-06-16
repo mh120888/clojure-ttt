@@ -26,6 +26,18 @@
       (should= "_" (get-current-marker-for-console-display new-board 0)))
 
     (it "returns the marker if the given space is taken"
-      (should= "x" (get-current-marker-for-console-display board-in-progress 0)))))
+      (should= "x" (get-current-marker-for-console-display board-in-progress 0))))
+
+  (describe "get-user-input"
+    (before-all
+      (def message "Where would you like to play?"))
+
+    (it "asks the user the specified question"
+      (should="Where would you like to play?\n" (with-out-str (with-in-str "3" (get-user-input message)))))
+
+    (it "returns the move specified by the user"
+      (should= "3" (with-in-str "3" (get-user-input message)))))
+
+  )
 
 (run-specs)
