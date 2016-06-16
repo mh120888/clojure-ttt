@@ -9,5 +9,8 @@
 (defn score-board
   "Gives a numeric score for a board"
   [board marker]
-
-  )
+  (let [winner (has-won? board)]
+    (cond
+      (= false winner) 0
+      (= winner marker) 10
+      :else -10)))
