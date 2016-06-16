@@ -1,6 +1,6 @@
 (ns clojure-ttt.core)
 
-(declare space-free? look-up-space generate-diagonal-coords is-there-a-win? not-empty? top-left-to-bottom-right-coords top-right-to-bottom-left-coords get-current-marker-for-console-display)
+(declare space-free? look-up-space generate-diagonal-coords is-there-a-win? not-empty? top-left-to-bottom-right-coords top-right-to-bottom-left-coords)
 
 (defn generate-new-board
   "Creates a new game board with the specified number of rows"
@@ -91,21 +91,3 @@
     ([current incrementer]
       (let [next-num (+ current incrementer)]
         (cons current (lazy-seq (top-right-to-bottom-left-coords next-num incrementer))))))
-
-(defn print-board
-  "Prints out a board in a nice format"
-  [board]
-  (let [num-of-rows (int (java.lang.Math/sqrt (count board)))]
-  (doseq [n (range (count board))]
-    (let [current-marker (get-current-marker-for-console-display board n)]
-    (if (integer? (/ (inc n) num-of-rows))
-      (print (str current-marker "\n"))
-      (print (str current-marker " "))))))
-)
-
-(defn get-current-marker-for-console-display
-  "Returns correct character to print to console"
-  [board space]
-  (if (look-up-space board space)
-    (look-up-space board space)
-    "_"))
