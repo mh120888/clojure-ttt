@@ -63,19 +63,19 @@
                                 3 {:marked "o"}, 4 {:marked "x"}, 5 {:marked "x"},
                                 6 {:marked "x"}, 7 {:marked "o"}, 8 {:marked "o"}})))
 
-    (it "returns true for a board with a horizontal win"
-      (should= true (has-won? {3 {:marked "x"}, 4 {:marked "x"}, 5 {:marked "x"}, 0 {:marked "o"}, 1 {}, 2 {}, 6 {}, 7 {}, 8 {}})))
+    (it "returns the winning marker for a board with a horizontal win"
+      (should= "x" (has-won? {3 {:marked "x"}, 4 {:marked "x"}, 5 {:marked "x"}, 0 {:marked "o"}, 1 {}, 2 {}, 6 {}, 7 {}, 8 {}})))
 
-    (it "returns true for a board with a vertical win"
-      (should= true (has-won? {1 {:marked "x"}, 4 {:marked "x"}, 7 {:marked "x"}, 0 {:marked "o"}, 3 {}, 2 {}, 6 {}, 5 {}, 8 {}})))
+    (it "returns the winning marker for a board with a vertical win"
+      (should= "x" (has-won? {1 {:marked "x"}, 4 {:marked "x"}, 7 {:marked "x"}, 0 {:marked "o"}, 3 {}, 2 {}, 6 {}, 5 {}, 8 {}})))
 
-    (it "returns true for a board with a diagonal win, top left to bottom right"
-      (should= true (has-won? {0 {:marked "x"}, 1 {:marked "o"}, 2 {:marked "x"},
+    (it "returns the winning marker for a board with a diagonal win, top left to bottom right"
+      (should= "x" (has-won? {0 {:marked "x"}, 1 {:marked "o"}, 2 {:marked "x"},
                                3 {:marked "o"}, 4 {:marked "x"}, 5 {:marked "o"},
                                6 {:marked "x"}, 7 {:marked "o"}, 8 {:marked "x"}})))
 
-    (it "returns true for a board with a diagonal win, top right to bottom left"
-      (should= true (has-won? {0 {:marked "o"}, 1 {:marked "o"}, 2 {:marked "x"},
+    (it "returns the winning marker for a board with a diagonal win, top right to bottom left"
+      (should= "x" (has-won? {0 {:marked "o"}, 1 {:marked "o"}, 2 {:marked "x"},
                                3 {:marked "o"}, 4 {:marked "x"}, 5 {:marked "o"},
                                6 {:marked "x"}, 7 {:marked "o"}, 8 {:marked "x"}})))))
 
