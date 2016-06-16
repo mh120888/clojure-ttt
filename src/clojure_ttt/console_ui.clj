@@ -11,8 +11,7 @@
     (let [current-marker (get-current-marker-for-console-display board n)]
     (if (zero? (mod (inc n) num-of-rows))
       (print (str current-marker "\n"))
-      (print (str current-marker " "))))))
-)
+      (print (str current-marker " ")))))))
 
 (defn get-current-marker-for-console-display
   "Returns correct character to print to console"

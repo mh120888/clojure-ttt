@@ -56,21 +56,25 @@
     (is-there-a-win? board num-of-rows spaces-on-board coords-to-check)))
 
 (defn is-there-a-win?
-  "Checks the board for a wins"
+  "Checks the board for a win"
   [board num-of-rows spaces-on-board coords-to-check]
     (loop [coords-to-check coords-to-check
            row-to-check (first coords-to-check)
            found-win false]
       (if (or found-win (empty? coords-to-check))
-        (if found-win
-          true
-          false)
-          (let [this-row-as-set (into #{} (vals (select-keys board (into [] (first coords-to-check)))))
-                is-this-a-win (and (not-empty? (first this-row-as-set))
-                                   (= 1 (count this-row-as-set)))]
-            (recur (rest coords-to-check) (first (rest coords-to-check)) is-this-a-win)))))
+        found-win
+        (let [this-row-as-set (into #{} (vals (select-keys board (into [] (first coords-to-check)))))
+              is-this-a-win (and (not-empty? (first this-row-as-set))
+                                  (= 1 (count this-row-as-set)))
+              winning-marker (and is-this-a-win (:marked (first this-row-as-set)))]
+          (recur (rest coords-to-check) (first (rest coords-to-check)) winning-marker)))))
 
 (def not-empty? (complement empty?))
+
+(defn stop-game?
+  "Returns true either if there is a winner or if the board is full, otherwise returns false"
+  [board]
+  (or (board-full? board) (and (has-won? board) true)))
 
 (defn generate-diagonal-coords
   "Returns the winning coordinates for a diagonal win"
@@ -91,3 +95,10 @@
     ([current incrementer]
       (let [next-num (+ current incrementer)]
         (cons current (lazy-seq (top-right-to-bottom-left-coords next-num incrementer))))))
+
+(defn get-other-marker
+  "Returns the other marker"
+  [marker]
+  (if (= "x" marker)
+    "o"
+    "x"))
