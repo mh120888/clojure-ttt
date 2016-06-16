@@ -71,6 +71,11 @@
 
 (def not-empty? (complement empty?))
 
+(defn stop-game?
+  "Returns true either if there is a winner or if the board is full, otherwise returns false"
+  [board]
+  (or (board-full? board) (and (has-won? board) true)))
+
 (defn generate-diagonal-coords
   "Returns the winning coordinates for a diagonal win"
   [num-of-rows]
@@ -90,3 +95,10 @@
     ([current incrementer]
       (let [next-num (+ current incrementer)]
         (cons current (lazy-seq (top-right-to-bottom-left-coords next-num incrementer))))))
+
+(defn get-other-marker
+  "Returns the other marker"
+  [marker]
+  (if (= "x" marker)
+    "o"
+    "x"))

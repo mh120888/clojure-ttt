@@ -14,7 +14,13 @@
                                   6 {:marked "x"}, 7 {:marked "o"}, 8 {}}))
 
   (it "returns the only possible move on a board that has only one available space"
-    (should= 2 (get-next-move board-with-only-one-space-open "x"))))
+    (should= 2 (get-next-move board-with-only-one-space-open "x")))
+
+  (it "returns the move that will allow the given player to win"
+    (should= 8 (get-next-move board-with-imminent-win "x")))
+
+
+  )
 
 (describe "score-board"
   (before-all
@@ -27,12 +33,23 @@
                                6 {:marked "o"}, 7 {:marked "o"}, 8 {:marked "x"}}))
 
   (it "gives a positive score if the given player has won"
-    (should= true (< 0 (score-board board-where-x-wins "x"))))
+    (should= true (< 0 (score-board board-where-x-wins "x" 1))))
 
   (it "gives a negative score if the given player has lost"
-    (should= false (< 0 (score-board board-where-x-wins "o"))))
+    (should= false (< 0 (score-board board-where-x-wins "o" 1))))
 
   (it "returns 0 if it's a cat's game"
-    (should= 0 (score-board board-with-cats-game "x")))
+    (should= 0 (score-board board-with-cats-game "x" 1))))
 
-  )
+(describe "bubble-up-score"
+  (it "returns an integer if given an integer"
+    (should= 3 (bubble-up-score 3)))
+  (it "returns the value if given a map with one element"
+    (should= 0 (bubble-up-score {8 0}))))
+
+(describe "flatten-score-map"
+  (it "returns the a map as-is if it is not nested"
+    (should= {5 0, 8 9} (flatten-score-map {5 0, 8 9})))
+
+  (it "returns a map flattened by replacing a nested map with its value"
+    (should= {5 0, 8 9} (flatten-score-map {5 {8 {8 0}}, 8 9}))))
