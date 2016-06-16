@@ -1,6 +1,5 @@
 (ns clojure-ttt.console-ui
-  (:require [speclj.core :refer :all]
-    [clojure-ttt.core :refer :all]))
+  (:require [clojure-ttt.core :refer :all]))
 
 (declare get-current-marker-for-console-display)
 
