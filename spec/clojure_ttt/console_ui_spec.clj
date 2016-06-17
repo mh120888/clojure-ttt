@@ -36,6 +36,14 @@
       (should="Where would you like to play?\n" (with-out-str (with-in-str "3" (get-user-input message)))))
 
     (it "returns the move specified by the user"
-      (should= "3" (with-in-str "3" (get-user-input message))))))
+      (should= "3" (with-in-str "3" (get-user-input message)))))
+
+  (describe "do-you-want-to-go-first"
+    (it "returns y (yes) if a user inputs y"
+      (should= "y" (with-in-str "y" (do-you-want-to-go-first))))))
+
+  (describe "what-size-board-would-you-like"
+    (it "returns the board size the user chose, if it is valid"
+      (should= 3 (with-in-str "3" (what-size-board-would-you-like)))))
 
 (run-specs)
