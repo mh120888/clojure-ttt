@@ -1,7 +1,7 @@
 (ns clojure-ttt.ai-player
   (:require [clojure-ttt.core :refer :all]))
 
-(declare negamax score-board bubble-up-score flatten-score-map)
+(declare negamax score-board bubble-up-score flatten-score-map play-next-round-of-moves)
 
 (defn get-next-move
   "Calculates which is the best move for a given player and a given board"
@@ -16,7 +16,11 @@
   (if (stop-game? board)
     (* color (score-board board marker depth))
     (let [free-spaces (find-free-spaces board)]
-      (into {} (map #(assoc % 1 (negamax (mark-space board (first %) marker) (inc depth) (get-other-marker marker) (* -1 color))) free-spaces)))))
+      (play-next-round-of-moves board depth marker color free-spaces))))
+
+(defn play-next-round-of-moves
+  [board depth marker color free-spaces]
+    (into {} (map #(assoc % 1 (negamax (mark-space board (first %) marker) (inc depth) (get-other-marker marker) (* -1 color))) free-spaces)))
 
 (defn score-board
   "Gives a numeric score for a board"

@@ -64,6 +64,16 @@
     (it "returns true for a board with no free spaces"
       (should= true (board-full? board-with-cats-game))))
 
+  (describe "valid-move?"
+    (it "returns true if input corresponds to a space on the board and that space is empty"
+      (should= true (valid-move? new-board 0)))
+
+    (it "returns false if the given space is not free"
+      (should= false (valid-move? board-with-0-marked-with-x 0)))
+
+    (it "returns false if the input does not correspond to a space on the board"
+      (should= false (valid-move? new-board 20))))
+
   (describe "space-free?"
     (it "returns true if a space is empty"
       (should= true (space-free? new-board 0)))

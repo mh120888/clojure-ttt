@@ -15,6 +15,10 @@
     (merge board {space {:marked mark}})
     board))
 
+(defn valid-move?
+  [board space]
+  (and (space-free? board space) (and (>= space 0) (< space (count board)))))
+
 (defn space-free?
   "Tests whether a particular space is free"
   [board space]

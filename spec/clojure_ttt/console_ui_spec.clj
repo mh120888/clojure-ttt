@@ -39,11 +39,19 @@
       (should= "3" (with-in-str "3" (get-user-input message)))))
 
   (describe "do-you-want-to-go-first"
-    (it "returns y (yes) if a user inputs y"
+    (it "returns true if a user inputs y"
       (should= "y" (with-in-str "y" (do-you-want-to-go-first))))))
 
-  (describe "what-size-board-would-you-like"
+  (describe "get-board-size"
     (it "returns the board size the user chose, if it is valid"
-      (should= 3 (with-in-str "3" (what-size-board-would-you-like)))))
+      (should= 3 (with-in-str "3" (get-board-size)))))
+
+  (describe "get-human-marker"
+    (it "returns the marker the user chose, if it is valid"
+      (should= "x" (with-in-str "x" (get-human-marker)))))
+
+  ; (describe "get-next-human-move"
+  ;   (it "returns the move the user chose, if it is valid"
+  ;   (should= 2 (with-in-str "2" (get-next-human-move new-board)))))
 
 (run-specs)
