@@ -56,10 +56,9 @@
 
 (defn get-next-human-move
   "Asks a user where they would like tp play and checks if the move is valid"
-  ([board] (get-next-human-move (str "Where would you like to play? Please enter a number between 1 and " (int (count board))) board))
+  ([board] (get-next-human-move (str "Where would you like to play? Please enter a number between 0 and " (int (dec (count board)))) board))
   ([message board]
     (let [response (get-user-input message)]
       (if (valid-move? board response)
         (Integer/parseInt response)
-        ; (recur (str "Sorry that's not a valid move. Please enter a number between 0 and " (int (dec (count board)))" that isn't already taken.") board)
-      ))))
+        (recur (str "Sorry that's not a valid move. Please enter a number between 0 and " (int (dec (count board)))" that isn't already taken.") board)))))

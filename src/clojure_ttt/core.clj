@@ -23,14 +23,14 @@
   [space]
   (integer? (read-string space)))
 
-(defn is-space-on-board?
-  [board space]
-  (and (>= space 0) (< space (dec (count board)))))
-
 (defn space-free?
   "Tests whether a particular space is free"
   [board space]
   (nil? (look-up-space board space)))
+
+(defn is-space-on-board?
+  [board space]
+  (and (>= space 0) (< space (count board))))
 
 (defn look-up-space
   "Returns the marker with which a space is marked, or nil if it is unmarked"

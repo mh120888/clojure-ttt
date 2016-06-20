@@ -67,7 +67,7 @@
 
   (describe "valid-move?"
     (it "returns true if input corresponds to a space on the board and that space is empty"
-      (should= true (valid-move? new-board "1")))
+      (should= true (valid-move? new-board "8")))
 
     (it "returns false if the given space is not free"
       (should= false (valid-move? board-with-first-space-marked-with-x "0")))
@@ -87,7 +87,7 @@
 
   (describe "space-free?"
     (it "returns true if a space is empty"
-      (should= true (space-free? new-board 0)))
+      (should= true (space-free? new-board 8)))
 
     (it "returns false if a space is taken"
       (should= false (space-free? board-with-first-space-marked-with-x 0))))

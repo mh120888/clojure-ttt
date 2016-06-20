@@ -8,6 +8,7 @@
   [board marker]
   (let [moves-and-scores (negamax board 0 marker 1)
         potential-moves (flatten-score-map moves-and-scores)]
+        (println moves-and-scores)
     (first (last (sort-by val potential-moves)))))
 
 (defn negamax

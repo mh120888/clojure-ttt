@@ -13,6 +13,10 @@
                                   3 {:marked "o"}, 4 {:marked "x"}, 5 {},
                                   6 {:marked "x"}, 7 {:marked "o"}, 8 {}})
 
+    (def another-board-with-imminent-loss {0 {           }, 1 {           }, 2 {           },
+                                           3 {:marked "o"}, 4 {:marked "x"}, 5 {           },
+                                           6 {:marked "x"}, 7 {},            8 {:marked "o"}})
+
     (def board-with-imminent-loss {0 {:marked "x"}, 1 {:marked "x"}, 2 {:marked "o"},
                                    3 {:marked "o"}, 4 {:marked "o"}, 5 {},
                                    6 {:marked "x"}, 7 {:marked "o"}, 8 {}})
@@ -27,6 +31,9 @@
 
   (it "returns the move that will prevent the opponent from winning"
     (should= 5 (get-next-move board-with-imminent-loss "x")))
+
+  (it "returns the move that will prevent the opponent from winning"
+    (should= 2 (get-next-move another-board-with-imminent-loss "o")))
 
   ; (it "returns a corner space for an empty board"
   ;   (should= true (contains? [0 2 6 8] (get-next-move new-board "x"))))
