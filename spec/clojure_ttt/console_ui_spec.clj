@@ -15,8 +15,7 @@
       (should= "_ _ _\n_ _ _\n_ _ _\n" (with-out-str (print-board new-board))))
 
     (before
-      (def board-in-progress (do
-        (mark-space new-board 0 "x"))))
+      (def board-in-progress (mark-space new-board 0 "x")))
 
     (it "prints out a board in progress in a nice format"
       (should= "x _ _\n_ _ _\n_ _ _\n" (with-out-str (print-board board-in-progress)))))
@@ -39,8 +38,8 @@
       (should= "3" (with-in-str "3" (get-user-input message)))))
 
   (describe "do-you-want-to-go-first"
-    (it "returns true if a user inputs y"
-      (should= "y" (with-in-str "y" (do-you-want-to-go-first))))))
+    (it "returns y if a user inputs y"
+      (should= "y" (with-in-str "y" (do-you-want-to-go-first)))))
 
   (describe "get-board-size"
     (it "returns the board size the user chose, if it is valid"
@@ -50,8 +49,8 @@
     (it "returns the marker the user chose, if it is valid"
       (should= "x" (with-in-str "x" (get-human-marker)))))
 
-  ; (describe "get-next-human-move"
-  ;   (it "returns the move the user chose, if it is valid"
-  ;   (should= 2 (with-in-str "2" (get-next-human-move new-board)))))
+  (describe "get-next-human-move"
+    (it "returns the move the user chose, if it is valid"
+      (should= 2 (with-in-str "2" (get-next-human-move new-board))))))
 
 (run-specs)

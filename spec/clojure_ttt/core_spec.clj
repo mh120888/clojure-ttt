@@ -1,12 +1,13 @@
 (ns clojure-ttt.core-spec
   (:require [speclj.core :refer :all]
     [clojure-ttt.core :refer :all]))
+
 (describe "Modeling a tic tac toe board"
 
   (before-all
     (def new-board (generate-new-board 3))
 
-    (def board-with-0-marked-with-x (mark-space new-board 0 "x"))
+    (def board-with-first-space-marked-with-x (mark-space new-board 0 "x"))
 
     (def board-with-cats-game {0 {:marked "x"}, 1 {:marked "o"}, 2 {:marked "o"},
                                3 {:marked "o"}, 4 {:marked "x"}, 5 {:marked "x"},
@@ -34,10 +35,10 @@
 
   (describe "mark-space"
     (it "does not mark the board if the given space is already taken"
-      (should= board-with-0-marked-with-x (mark-space board-with-0-marked-with-x 0 "o")))
+      (should= board-with-first-space-marked-with-x (mark-space board-with-first-space-marked-with-x 0 "o")))
 
     (it "marks a space with the given mark"
-      (should= board-with-0-marked-with-x (mark-space new-board 0 "x"))))
+      (should= board-with-first-space-marked-with-x (mark-space new-board 0 "x"))))
 
   (describe "find-free-spaces"
     (it "returns the board with only the free spaces left"
@@ -66,20 +67,30 @@
 
   (describe "valid-move?"
     (it "returns true if input corresponds to a space on the board and that space is empty"
-      (should= true (valid-move? new-board 0)))
+      (should= true (valid-move? new-board "1")))
 
     (it "returns false if the given space is not free"
-      (should= false (valid-move? board-with-0-marked-with-x 0)))
+      (should= false (valid-move? board-with-first-space-marked-with-x "0")))
 
     (it "returns false if the input does not correspond to a space on the board"
-      (should= false (valid-move? new-board 20))))
+      (should= false (valid-move? new-board "20")))
+
+    (it "returns false if the input is not a board space at all"
+      (should= false (valid-move? new-board "not a space"))))
+
+  (describe "is-integer?"
+    (it "returns true if given a string representation of an integer"
+      (should= true (is-integer? "2")))
+
+    (it "returns false if given any other string"
+      (should= false (is-integer? "not an int"))))
 
   (describe "space-free?"
     (it "returns true if a space is empty"
       (should= true (space-free? new-board 0)))
 
     (it "returns false if a space is taken"
-      (should= false (space-free? board-with-0-marked-with-x 0))))
+      (should= false (space-free? board-with-first-space-marked-with-x 0))))
 
   (describe "has-won?"
     (it "returns false for an empty board"
@@ -111,7 +122,7 @@
       (should= false (stop-game? new-board)))
 
     (it "returns false for a game in progress that has no winner yet"
-      (should= false (stop-game? board-with-0-marked-with-x))))
+      (should= false (stop-game? board-with-first-space-marked-with-x))))
 
   (describe "get-other-marker"
     (it "returns \"x\" if given \"o\""

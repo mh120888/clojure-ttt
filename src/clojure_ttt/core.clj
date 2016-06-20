@@ -1,6 +1,6 @@
 (ns clojure-ttt.core)
 
-(declare space-free? look-up-space generate-diagonal-coords is-there-a-win? not-empty? top-left-to-bottom-right-coords top-right-to-bottom-left-coords)
+(declare space-free? is-integer? is-space-on-board? look-up-space generate-diagonal-coords is-there-a-win? not-empty? top-left-to-bottom-right-coords top-right-to-bottom-left-coords)
 
 (defn generate-new-board
   "Creates a new game board with the specified number of rows"
@@ -17,7 +17,15 @@
 
 (defn valid-move?
   [board space]
-  (and (space-free? board space) (and (>= space 0) (< space (count board)))))
+  (and (is-integer? space) (space-free? board (Integer/parseInt space)) (is-space-on-board? board (Integer/parseInt space))))
+
+(defn is-integer?
+  [space]
+  (integer? (read-string space)))
+
+(defn is-space-on-board?
+  [board space]
+  (and (>= space 0) (< space (dec (count board)))))
 
 (defn space-free?
   "Tests whether a particular space is free"
