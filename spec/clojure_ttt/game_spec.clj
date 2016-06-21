@@ -1,7 +1,7 @@
 (ns clojure-ttt.game-spec
   (:require [speclj.core :refer :all]
     [clojure-ttt.core :refer :all]
-    [clojure-ttt.game :refer :all]))
+    [clojure-ttt.game :refer :all])
 
 (describe "Game"
   (describe "get-starting-marker"
