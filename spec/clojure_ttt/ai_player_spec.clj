@@ -17,8 +17,8 @@
                                    3 {:marked "o"}, 4 {:marked "o"}, 5 {},
                                    6 {:marked "x"}, 7 {:marked "o"}, 8 {}})
 
-    (def another-board-with-imminent-loss {0 {:marked "x"}, 1 {           }, 2 {           },
-                                           3 {:marked "x"}, 4 {:marked "o"}, 5 {:marked "o"},
+    (def another-board-with-imminent-loss {0 {           }, 1 {           }, 2 {           },
+                                           3 {:marked "x"}, 4 {:marked "o"}, 5 {           },
                                            6 {:marked "o"}, 7 {},            8 {:marked "x"}})
 
     (def new-board (generate-new-board 3)))
@@ -57,15 +57,24 @@
   (it "returns 0 if it's a cat's game"
     (should= 0 (score-board board-with-cats-game "x" 1))))
 
-(describe "bubble-up-score"
-  (it "returns an integer if given an integer"
-    (should= 3 (bubble-up-score 3)))
-  (it "returns the value if given a map with one element"
-    (should= 0 (bubble-up-score {8 0}))))
-
 (describe "flatten-score-map"
   (it "returns the a map as-is if it is not nested"
     (should= {5 0, 8 9} (flatten-score-map {5 0, 8 9})))
 
   (it "returns a map flattened by replacing a nested map with its value"
     (should= {5 0, 8 9} (flatten-score-map {5 {8 {8 0}}, 8 9}))))
+
+(describe "get-max-value"
+  (it "returns the highest value from a map"
+    (should= 5 (get-max-value {1 2, 2 2, 3 3, 4 5}))))
+
+(describe "get-min-value"
+  (it "returns the lowest value from a map"
+    (should= 1 (get-min-value {4 6, 3 4, 6 6, 10 1}))))
+
+(describe "alternate-max-and-min"
+  (it "returns get-max-value when given get-min-value"
+    (should= get-max-value (alternate-max-and-min get-min-value)))
+
+  (it "returns get-min-value when given get-max-value"
+    (should= get-min-value (alternate-max-and-min get-max-value))))
