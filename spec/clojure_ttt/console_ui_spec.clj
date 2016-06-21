@@ -12,13 +12,13 @@
 
   (describe "print-board"
     (it "prints out a new board in a nice format"
-      (should= "_ _ _\n_ _ _\n_ _ _\n" (with-out-str (print-board new-board))))
+      (should= "_ _ _\n_ _ _\n_ _ _\n\n\n" (with-out-str (print-board new-board))))
 
     (before
       (def board-in-progress (mark-space new-board 0 "x")))
 
     (it "prints out a board in progress in a nice format"
-      (should= "x _ _\n_ _ _\n_ _ _\n" (with-out-str (print-board board-in-progress)))))
+      (should= "x _ _\n_ _ _\n_ _ _\n\n\n" (with-out-str (print-board board-in-progress)))))
 
   (describe "get-current-marker-for-console-display"
     (it "returns an understore if the given space is empty"

@@ -48,8 +48,9 @@
 (defn print-board
   [board]
   (let [num-of-rows (int (java.lang.Math/sqrt (count board)))]
-  (doseq [n (range (count board))]
-    (let [current-marker (get-current-marker-for-console-display board n)]
-    (if (zero? (mod (inc n) num-of-rows))
+  (doseq [current-space (range (count board))]
+    (let [current-marker (get-current-marker-for-console-display board current-space)]
+    (if (zero? (mod (inc current-space) num-of-rows))
       (print (str current-marker "\n"))
-      (print (str current-marker " ")))))))
+      (print (str current-marker " ")))))
+  (print "\n\n")))
