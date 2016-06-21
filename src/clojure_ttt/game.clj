@@ -1,9 +1,14 @@
 (ns clojure-ttt.game
+  (:gen-class)
   (:require [clojure-ttt.core :refer :all]
     [clojure-ttt.console-ui :refer :all]
     [clojure-ttt.ai-player :refer :all]))
 
-(declare get-starting-marker)
+(defn get-starting-marker
+  [human-marker human-goes-first]
+  (if (= "y" human-goes-first)
+    human-marker
+    (get-other-marker human-marker)))
 
 (defn play-game
   []
@@ -26,18 +31,8 @@
                 (print-board next-board)
                 (if (stop-game? next-board)
                   (println "Game over")
-                  (recur (get-other-marker current-marker) next-board human-marker)))))
-    )
-)
+                  (recur (get-other-marker current-marker) next-board human-marker)))))))
 
-  ; ask for move
-          ; make move
-          ; check if game is over
-              ; IF yes, check if there is a winner
-              ; ELSE recur with the other marker, current board, and same human marker
-
-(defn get-starting-marker
-  [human-marker human-goes-first]
-  (if (= "y" human-goes-first)
-    human-marker
-    (get-other-marker human-marker)))
+(defn -main
+  []
+  (play-game))

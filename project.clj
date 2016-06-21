@@ -7,4 +7,5 @@
   :profiles {:dev {:dependencies [[speclj "3.3.1"]]}}
   :plugins [[speclj "3.3.1"]]
   :repl-options {:init (load-file "src/clojure_ttt/core.clj" ) }
-  :test-paths ["spec"])
+  :test-paths ["spec"]
+  :main clojure-ttt.game)
