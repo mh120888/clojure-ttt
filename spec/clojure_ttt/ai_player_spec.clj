@@ -1,9 +1,9 @@
 (ns clojure-ttt.ai-player-spec
   (:require [speclj.core :refer :all]
-    [clojure-ttt.core :refer :all]
-    [clojure-ttt.ai-player :refer :all]
-    [clojure-ttt.game :refer :all]
-    [clojure-ttt.player :refer :all])
+    [clojure-ttt.core :as core]
+    [clojure-ttt.ai-player :as ai-player]
+    [clojure-ttt.game :as game]
+    [clojure-ttt.player :as player])
   (:import [clojure_ttt.player ComputerPlayer]))
 
 (describe "ComputerPlayer.get-move"
@@ -26,21 +26,21 @@
                                            3 {:marked "x"}, 4 {:marked "o"}, 5 {           },
                                            6 {:marked "o"}, 7 {           }, 8 {:marked "x"}})
 
-    (def new-board (generate-new-board 3)))
+    (def new-board (core/generate-new-board 3)))
 
   (it "returns the only possible move on a board that has only one available space"
-    (should= 2 (get-move computer-player board-with-only-one-space-open "x")))
+    (should= 2 (player/get-move computer-player board-with-only-one-space-open "x")))
 
   (it "returns the move that will allow the given player to win"
-    (should= 8 (get-move computer-player board-with-imminent-win "x")))
+    (should= 8 (player/get-move computer-player board-with-imminent-win "x")))
 
   (it "returns the move that will prevent the opponent from winning"
-    (should= 5 (get-move computer-player board-with-imminent-loss "x")))
+    (should= 5 (player/get-move computer-player board-with-imminent-loss "x")))
 
   (it "returns the move that will prevent the opponent from winning"
-    (should= 2 (get-move computer-player another-board-with-imminent-loss "x"))))
+    (should= 2 (player/get-move computer-player another-board-with-imminent-loss "x"))))
 
-(describe "score-board"
+(describe "ai-player/score-board"
   (before-all
     (def board-where-x-wins {0 {:marked "o"}, 1 {:marked "o"}, 2 {:marked "x"},
                              3 {:marked "o"}, 4 {:marked "x"}, 5 {:marked "o"},
@@ -51,39 +51,39 @@
                                6 {:marked "o"}, 7 {:marked "o"}, 8 {:marked "x"}}))
 
   (it "gives a positive score if the given player has won"
-    (should= true (< 0 (score-board board-where-x-wins "x" 1))))
+    (should= true (< 0 (ai-player/score-board board-where-x-wins "x" 1))))
 
   (it "gives a negative score if the given player has lost"
-    (should= false (< 0 (score-board board-where-x-wins "o" 1))))
+    (should= false (< 0 (ai-player/score-board board-where-x-wins "o" 1))))
 
   (it "returns 0 if it's a cat's game"
-    (should= 0 (score-board board-with-cats-game "x" 1))))
+    (should= 0 (ai-player/score-board board-with-cats-game "x" 1))))
 
-(describe "flatten-score-map"
+(describe "ai-player/flatten-score-map"
   (it "returns the a map as-is if it is not nested"
-    (should= {5 0, 8 9} (flatten-score-map {5 0, 8 9})))
+    (should= {5 0, 8 9} (ai-player/flatten-score-map {5 0, 8 9})))
 
   (it "returns a map flattened by replacing a nested map with its value"
-    (should= {5 0, 8 9} (flatten-score-map {5 {8 {8 0}}, 8 9}))))
+    (should= {5 0, 8 9} (ai-player/flatten-score-map {5 {8 {8 0}}, 8 9}))))
 
-(describe "all-map-values-are-integers?"
+(describe "ai-player/all-map-values-are-integers?"
   (it "returns true if all values are integers"
-    (should= true (all-map-values-are-integers? {1 2, 2 2, 3 3, 4 5})))
+    (should= true (ai-player/all-map-values-are-integers? {1 2, 2 2, 3 3, 4 5})))
 
   (it "returns false if not all values are integers"
-    (should= false (all-map-values-are-integers? {1 2, 2 2, 3 3, 4 {2 1}}))))
+    (should= false (ai-player/all-map-values-are-integers? {1 2, 2 2, 3 3, 4 {2 1}}))))
 
-(describe "get-max-value"
+(describe "ai-player/get-max-value"
   (it "returns the highest value from a map"
-    (should= 5 (get-max-value {1 2, 2 2, 3 3, 4 5}))))
+    (should= 5 (ai-player/get-max-value {1 2, 2 2, 3 3, 4 5}))))
 
-(describe "get-min-value"
+(describe "ai-player/get-min-value"
   (it "returns the lowest value from a map"
-    (should= 1 (get-min-value {4 6, 3 4, 6 6, 10 1}))))
+    (should= 1 (ai-player/get-min-value {4 6, 3 4, 6 6, 10 1}))))
 
-(describe "alternate-max-and-min"
-  (it "returns get-max-value when given get-min-value"
-    (should= get-max-value (alternate-max-and-min get-min-value)))
+(describe "ai-player/alternate-max-and-min"
+  (it "returns ai-player/get-max-value when given ai-player/get-min-value"
+    (should= ai-player/get-max-value (ai-player/alternate-max-and-min ai-player/get-min-value)))
 
-  (it "returns get-min-value when given get-max-value"
-    (should= get-min-value (alternate-max-and-min get-max-value))))
+  (it "returns ai-player/get-min-value when given ai-player/get-max-value"
+    (should= ai-player/get-min-value (ai-player/alternate-max-and-min ai-player/get-max-value))))

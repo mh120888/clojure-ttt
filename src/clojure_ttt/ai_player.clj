@@ -1,5 +1,5 @@
 (ns clojure-ttt.ai-player
-  (:require [clojure-ttt.core :refer :all]))
+  (:require [clojure-ttt.core :as core]))
 
 (declare negamax)
 
@@ -39,7 +39,7 @@
 
 (defn score-board
   [board marker depth]
-  (let [winner (has-won? board)]
+  (let [winner (core/has-won? board)]
     (cond
       (= false winner) 0
       (= winner marker) (- 10 depth)
@@ -47,11 +47,11 @@
 
 (defn play-next-round-of-moves
   [board depth marker color free-spaces]
-    (into {} (map #(assoc % 1 (negamax (mark-space board (first %) marker) (inc depth) (get-other-marker marker) color)) free-spaces)))
+    (into {} (map #(assoc % 1 (negamax (core/mark-space board (first %) marker) (inc depth) (core/get-other-marker marker) color)) free-spaces)))
 
 (defn negamax
   [board depth marker color]
-  (if (stop-game? board)
+  (if (core/stop-game? board)
     (* color (score-board board marker depth))
-    (let [free-spaces (find-free-spaces board)]
+    (let [free-spaces (core/find-free-spaces board)]
       (play-next-round-of-moves board depth marker (* -1 color) free-spaces))))

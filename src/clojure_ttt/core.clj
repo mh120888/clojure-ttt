@@ -7,13 +7,15 @@
     "x"))
 
 (defn top-right-to-bottom-left-coords
-    ([num-of-rows] (top-right-to-bottom-left-coords (dec num-of-rows) (dec num-of-rows)))
-    ([current incrementer]
-      (let [next-num (+ current incrementer)]
-        (cons current (lazy-seq (top-right-to-bottom-left-coords next-num incrementer))))))
+  ([num-of-rows]
+    (top-right-to-bottom-left-coords (dec num-of-rows) (dec num-of-rows)))
+  ([current incrementer]
+    (let [next-num (+ current incrementer)]
+      (cons current (lazy-seq (top-right-to-bottom-left-coords next-num incrementer))))))
 
 (defn top-left-to-bottom-right-coords
-  ([num-of-rows] (top-left-to-bottom-right-coords 0 num-of-rows))
+  ([num-of-rows]
+    (top-left-to-bottom-right-coords 0 num-of-rows))
   ([current incrementer]
     (let [next-num (+ (inc current) incrementer)]
       (cons current (lazy-seq (top-left-to-bottom-right-coords next-num incrementer))))))
