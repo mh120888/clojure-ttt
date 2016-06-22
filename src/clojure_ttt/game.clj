@@ -17,9 +17,7 @@
   (console-ui/print-board io-channel board)
   (let [next-board (core/mark-space board (player/get-move (first players) board current-marker) current-marker)]
     (if (core/stop-game? next-board)
-      (do
-        (console-ui/print-board io-channel next-board)
-        (console-ui/io-print-line io-channel "Game over"))
+      (console-ui/show-final-result io-channel next-board (core/has-won? next-board))
       (recur io-channel (reverse players) (core/get-other-marker current-marker) human-marker next-board))))
 
 (defn game-setup

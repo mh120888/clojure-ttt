@@ -60,3 +60,10 @@
                 (str (get-current-marker-for-console-display board current-space) "\n")
                 (str (get-current-marker-for-console-display board current-space) " ")))
         (range (count board)))))))
+
+(defn show-final-result
+  [io-channel final-board winner]
+    (print-board io-channel final-board)
+    (if winner
+      (io-print-line io-channel (str winner " won the game."))
+      (io-print-line io-channel "Cat's game.")))

@@ -32,6 +32,23 @@
     (it "prints out a board in progress in a nice format"
       (should= "x _ _\n_ _ _\n_ _ _\n" (console-ui/print-board (TestConsoleIO. "") board-in-progress))))
 
+  (describe "console-ui/show-final-result"
+
+    (before
+      (def board-where-x-wins {0 {:marked "o"}, 1 {:marked "o"}, 2 {:marked "x"},
+                               3 {:marked "o"}, 4 {:marked "x"}, 5 {:marked "o"},
+                               6 {:marked "x"}, 7 {:marked "o"}, 8 {:marked "x"}}))
+
+    (def board-with-cats-game {0 {:marked "o"}, 1 {:marked "o"}, 2 {:marked "x"},
+                               3 {:marked "x"}, 4 {:marked "x"}, 5 {:marked "o"},
+                               6 {:marked "o"}, 7 {:marked "o"}, 8 {:marked "x"}})
+
+    (it "prints out which player won, if there is a winner"
+      (should= "x won the game." (console-ui/show-final-result (TestConsoleIO. "") board-where-x-wins "x")))
+
+    (it "prints out that it was a cat's game if there is no winner"
+      (should= "Cat's game." (console-ui/show-final-result (TestConsoleIO. "") board-with-cats-game false))))
+
   (describe "console-ui/get-current-marker-for-console-display"
     (it "returns an understore if the given space is empty"
       (should= "_" (console-ui/get-current-marker-for-console-display new-board 0)))
