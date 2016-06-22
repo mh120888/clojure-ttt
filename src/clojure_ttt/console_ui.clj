@@ -45,14 +45,6 @@
         response
         (recur io-channel "Sorry I don't understand. Please tell me which marker you would like, \"x\" or \"o\".")))))
 
-(defn get-next-human-move
-  ([io-channel board] (get-next-human-move io-channel board (str "Where would you like to play? Please enter a number between 0 and " (int (dec (count board))))))
-  ([io-channel board message]
-    (let [response (get-user-input io-channel message)]
-      (if (valid-move? board response)
-        (Integer/parseInt response)
-        (recur io-channel board (str "Sorry that's not a valid move. Please enter a number between 0 and " (int (dec (count board)))" that isn't already taken."))))))
-
 (defn get-current-marker-for-console-display
   [board space]
   (if (look-up-space board space)

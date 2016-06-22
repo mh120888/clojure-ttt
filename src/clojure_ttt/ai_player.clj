@@ -55,9 +55,3 @@
     (* color (score-board board marker depth))
     (let [free-spaces (find-free-spaces board)]
       (play-next-round-of-moves board depth marker (* -1 color) free-spaces))))
-
-(defn get-next-move
-  [board marker]
-  (let [moves-and-scores (negamax board 0 marker 1)
-        potential-moves (flatten-score-map moves-and-scores)]
-    (first (last (sort-by val potential-moves)))))

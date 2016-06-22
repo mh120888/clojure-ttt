@@ -1,10 +1,14 @@
 (ns clojure-ttt.ai-player-spec
   (:require [speclj.core :refer :all]
     [clojure-ttt.core :refer :all]
-    [clojure-ttt.ai-player :refer :all]))
+    [clojure-ttt.ai-player :refer :all]
+    [clojure-ttt.game :refer :all])
+  (:import [clojure_ttt.game ComputerPlayer]))
 
-(describe "get-next-move"
+(describe "ComputerPlayer.get-move"
   (before-all
+    (def computer-player (ComputerPlayer.))
+
     (def board-with-only-one-space-open {0 {:marked "x"}, 1 {:marked "o"}, 2 {},
                                          3 {:marked "o"}, 4 {:marked "x"}, 5 {:marked "x"},
                                          6 {:marked "x"}, 7 {:marked "o"}, 8 {:marked "o"}})
@@ -24,16 +28,16 @@
     (def new-board (generate-new-board 3)))
 
   (it "returns the only possible move on a board that has only one available space"
-    (should= 2 (get-next-move board-with-only-one-space-open "x")))
+    (should= 2 (get-move computer-player board-with-only-one-space-open "x")))
 
   (it "returns the move that will allow the given player to win"
-    (should= 8 (get-next-move board-with-imminent-win "x")))
+    (should= 8 (get-move computer-player board-with-imminent-win "x")))
 
   (it "returns the move that will prevent the opponent from winning"
-    (should= 5 (get-next-move board-with-imminent-loss "x")))
+    (should= 5 (get-move computer-player board-with-imminent-loss "x")))
 
   (it "returns the move that will prevent the opponent from winning"
-    (should= 2 (get-next-move another-board-with-imminent-loss "x"))))
+    (should= 2 (get-move computer-player another-board-with-imminent-loss "x"))))
 
 (describe "score-board"
   (before-all

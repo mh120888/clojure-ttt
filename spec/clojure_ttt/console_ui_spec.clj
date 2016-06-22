@@ -1,8 +1,10 @@
 (ns clojure-ttt.console-ui-spec
   (:require [speclj.core :refer :all]
     [clojure-ttt.core :refer :all]
-    [clojure-ttt.console-ui :refer :all])
-  (:import [clojure_ttt.console_ui ConsoleIO]))
+    [clojure-ttt.console-ui :refer :all]
+    [clojure-ttt.game :refer :all])
+  (:import [clojure_ttt.console_ui ConsoleIO]
+           [clojure_ttt.game HumanPlayer]))
 
 (deftype TestConsoleIO [input]
   IOProtocol
@@ -56,8 +58,8 @@
     (it "returns the marker the user chose, if it is valid"
       (should= "x" (get-human-marker (TestConsoleIO. "x")))))
 
-  (describe "get-next-human-move"
+  (describe "HumanPlayer.get-move"
     (it "returns the move the user chose, if it is valid"
-      (should= 2 (get-next-human-move (TestConsoleIO. "2") board-in-progress)))))
+      (should= 2 (get-move (HumanPlayer. (TestConsoleIO. "2")) board-in-progress "x")))))
 
 (run-specs)
