@@ -13,26 +13,27 @@
     (core/get-other-marker human-marker)))
 
 (defn play-game
-  [io-channel players]
-    (console-ui/io-print-line io-channel "Let's play a game of tic tac toe")
-    (let [human-marker (console-ui/get-human-marker io-channel)
-          human-goes-first (= "y" (console-ui/do-you-want-to-go-first io-channel))
-          players (if human-goes-first
-                    players
-                    (reverse players))
-          starting-marker (get-starting-marker human-marker human-goes-first)
-          new-board (core/generate-new-board (console-ui/get-board-size io-channel))]
-          (console-ui/print-board io-channel new-board)
-          (loop [current-marker starting-marker
-                 players players
-                 board new-board
-                 human-marker human-marker]
-            (let [next-board (core/mark-space board (player/get-move (first players) board current-marker) current-marker)]
-              (console-ui/print-board io-channel next-board)
-              (if (core/stop-game? next-board)
-                (console-ui/io-print-line io-channel "Game over")
-                (recur (core/get-other-marker current-marker) (reverse players) next-board human-marker))))))
+  [io-channel players current-marker human-marker board]
+  (console-ui/print-board io-channel board)
+  (let [next-board (core/mark-space board (player/get-move (first players) board current-marker) current-marker)]
+    (if (core/stop-game? next-board)
+      (do
+        (console-ui/print-board io-channel next-board)
+        (console-ui/io-print-line io-channel "Game over"))
+      (recur io-channel (reverse players) (core/get-other-marker current-marker) human-marker next-board))))
+
+(defn game-setup
+  [io-channel]
+  (console-ui/io-print-line io-channel "Let's play a game of tic tac toe")
+  (let [human-marker (console-ui/get-human-marker io-channel)
+        human-goes-first (= "y" (console-ui/do-you-want-to-go-first io-channel))
+        players (if human-goes-first
+                  [(HumanPlayer. io-channel) (ComputerPlayer.)]
+                  [(ComputerPlayer.) (HumanPlayer. io-channel)])
+        starting-marker (get-starting-marker human-marker human-goes-first)
+        new-board (core/generate-new-board (console-ui/get-board-size io-channel))]
+    (play-game io-channel players starting-marker human-marker new-board)))
 
 (defn -main
   []
-  (play-game (ConsoleIO.) [(HumanPlayer. (ConsoleIO.)) (ComputerPlayer.)]))
+  (game-setup (ConsoleIO.)))
