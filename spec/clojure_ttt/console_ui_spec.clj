@@ -2,9 +2,10 @@
   (:require [speclj.core :refer :all]
     [clojure-ttt.core :refer :all]
     [clojure-ttt.console-ui :refer :all]
-    [clojure-ttt.game :refer :all])
+    [clojure-ttt.game :refer :all]
+    [clojure-ttt.player :refer :all])
   (:import [clojure_ttt.console_ui ConsoleIO]
-           [clojure_ttt.game HumanPlayer]))
+           [clojure_ttt.player HumanPlayer]))
 
 (deftype TestConsoleIO [input]
   IOProtocol

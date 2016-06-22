@@ -2,8 +2,9 @@
   (:require [speclj.core :refer :all]
     [clojure-ttt.core :refer :all]
     [clojure-ttt.ai-player :refer :all]
-    [clojure-ttt.game :refer :all])
-  (:import [clojure_ttt.game ComputerPlayer]))
+    [clojure-ttt.game :refer :all]
+    [clojure-ttt.player :refer :all])
+  (:import [clojure_ttt.player ComputerPlayer]))
 
 (describe "ComputerPlayer.get-move"
   (before-all
