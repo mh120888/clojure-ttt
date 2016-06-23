@@ -87,7 +87,7 @@
 
 (defn stop-game?
   [board]
-  (or (board-full? board) (and (has-won? board) true)))
+  (or (and (has-won? board) true) (board-full? board)))
 
 (defn mark-space
   [board space mark]
