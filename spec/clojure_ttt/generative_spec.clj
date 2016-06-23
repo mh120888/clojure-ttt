@@ -18,24 +18,20 @@
   ((comp vec flatten) (map (fn [board] (core/mark-space board (player/get-move computer-player board ai-marker) ai-marker)) boards)))
 
 (defn simulate-possible-games
-  ([] (simulate-possible-games human-marker [(core/generate-new-board 3)] []))
-  ([current-marker
-    in-progress-boards
-    completed-boards]
-  (if (empty? in-progress-boards)
-    completed-boards
-    (if (= human-marker current-marker)
-      (let [new-in-progress-boards (simulate-possible-human-moves in-progress-boards human-marker)]
-        (recur ai-marker (vec (remove #(core/stop-game? %) new-in-progress-boards)) ((comp vec concat) completed-boards (vec (filter #(core/stop-game? %) new-in-progress-boards)))))
-      (let [new-in-progress-boards (simulate-computer-moves in-progress-boards ai-marker)]
-        (recur human-marker (vec (remove #(core/stop-game? %) new-in-progress-boards)) ((comp vec concat) completed-boards (vec (filter #(core/stop-game? %) new-in-progress-boards)))))))))
+  ([] (simulate-possible-games [human-marker ai-marker] [simulate-possible-human-moves simulate-computer-moves] [(core/generate-new-board 3)] []))
+  ([markers simulate-move-functions in-progress-boards completed-boards]
+    (if (empty? in-progress-boards)
+      completed-boards
+      (let [new-in-progress-boards ((first simulate-move-functions) in-progress-boards (first markers))]
+        (recur (reverse markers) (reverse simulate-move-functions) (vec (remove #(core/stop-game? %) new-in-progress-boards)) ((comp vec concat) completed-boards (vec (filter #(core/stop-game? %) new-in-progress-boards))))))))
 
+(tags :gen
 
 (describe "get-move for ComputerPlayer"
   (before
     (def possible-games (simulate-possible-games)))
 
   (it "never allows the human player to win"
-    (should= 0 (count (filter #(= human-marker (core/has-won? %)) possible-games)))))
+    (should= 0 (count (filter #(= human-marker (core/has-won? %)) possible-games))))))
 
 (run-specs)
