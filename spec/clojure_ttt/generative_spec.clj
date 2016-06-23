@@ -1,7 +1,6 @@
 (ns clojure-ttt.generative-spec
   (:require [speclj.core :refer :all]
             [clojure-ttt.core :as core]
-            [clojure-ttt.game :as game]
             [clojure-ttt.player :as player])
   (:import [clojure_ttt.player ComputerPlayer]))
 
