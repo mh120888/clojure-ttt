@@ -80,10 +80,3 @@
 (describe "ai-player/get-min-value"
   (it "returns the lowest value from a map"
     (should= 1 (ai-player/get-min-value {4 6, 3 4, 6 6, 10 1}))))
-
-(describe "ai-player/alternate-max-and-min"
-  (it "returns ai-player/get-max-value when given ai-player/get-min-value"
-    (should= ai-player/get-max-value (ai-player/alternate-max-and-min ai-player/get-min-value)))
-
-  (it "returns ai-player/get-min-value when given ai-player/get-max-value"
-    (should= ai-player/get-min-value (ai-player/alternate-max-and-min ai-player/get-max-value))))
