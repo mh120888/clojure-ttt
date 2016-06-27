@@ -29,17 +29,21 @@
   [board space]
   (get-in board [space :marked]))
 
+(defn find-spaces
+  ([f board] (into {} (filter #(f (look-up-space board (first %))) board)))
+  ([f value board] (into {} (filter #(f value (look-up-space board (first %))) board))))
+
 (defn find-spaces-taken-by
   [board marker]
-  (into {} (filter #(= marker (look-up-space board (first %))) board)))
+  (find-spaces = marker board))
 
 (defn find-taken-spaces
   [board]
-  (into {} (filter #(identity (look-up-space board (first %))) board)))
+  (find-spaces identity board))
 
 (defn find-free-spaces
   [board]
-  (into {} (filter #(nil? (look-up-space board (first %))) board)))
+  (find-spaces nil? board))
 
 (defn is-space-on-board?
   [board space]

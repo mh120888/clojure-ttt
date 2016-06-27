@@ -17,7 +17,7 @@
   ((comp vec flatten) (map (fn [board] (core/mark-space board (player/get-move computer-player board ai-marker) ai-marker)) boards)))
 
 (defn simulate-possible-games
-  ([] (simulate-possible-games [human-marker ai-marker] [simulate-possible-human-moves simulate-computer-moves] [(core/generate-new-board 3)] []))
+  ([] (simulate-possible-games [ai-marker human-marker] [simulate-computer-moves simulate-possible-human-moves] [(core/generate-new-board 3)] []))
   ([markers simulate-move-functions in-progress-boards completed-boards]
     (if (empty? in-progress-boards)
       completed-boards
