@@ -35,7 +35,7 @@
 
   (describe "mark-space"
     (it "does not mark the board if the given space is already taken"
-      (should= board-with-first-space-marked-with-x (mark-space board-with-first-space-marked-with-x 0 "o")))
+      (should-throw Error "That space is not empty" (mark-space board-with-first-space-marked-with-x 0 "o")))
 
     (it "marks a space with the given mark"
       (should= board-with-first-space-marked-with-x (mark-space new-board 0 "x"))))

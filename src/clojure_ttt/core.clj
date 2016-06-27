@@ -47,11 +47,11 @@
 
 (defn is-space-on-board?
   [board space]
-  (and (>= space 0) (< space (count board))))
+  (< -1 space (count board)))
 
 (defn space-free?
   [board space]
-  (nil? (look-up-space board space)))
+  ((comp nil? look-up-space) board space))
 
 (defn is-integer?
   [space]
@@ -59,7 +59,9 @@
 
 (defn valid-move?
   [board space]
-  (and (is-integer? space) (space-free? board (Integer/parseInt space)) (is-space-on-board? board (Integer/parseInt space))))
+  (and (is-integer? space)
+       (space-free? board (Integer/parseInt space))
+       (is-space-on-board? board (Integer/parseInt space))))
 
 (defn get-number-of-rows
   [board]
@@ -75,9 +77,9 @@
         coords-to-check (concat horizontal-coords vertical-coords diagonal-coords)]
     (loop [coords-to-check coords-to-check
            row-to-check (first coords-to-check)
-           found-win nil]
-      (if (or found-win (empty? coords-to-check))
-        found-win
+           winner nil]
+      (if (or winner (empty? coords-to-check))
+        winner
         (let [this-row-as-set (into #{} (vals (select-keys board (into [] (first coords-to-check)))))
               is-this-a-win (and (seq (first this-row-as-set)) (= 1 (count this-row-as-set)))
               winning-marker (or (and is-this-a-win (:marked (first this-row-as-set))) nil)]
@@ -95,7 +97,7 @@
   [board space mark]
   (if (space-free? board space)
     (merge board {space {:marked mark}})
-    board))
+    (throw (Error. "That space is not empty"))))
 
 (defn generate-new-board
   [num-of-rows]
