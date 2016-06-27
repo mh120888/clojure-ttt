@@ -36,7 +36,7 @@
   [board marker depth]
   (let [winner (core/get-winner board)]
     (condp = winner
-      false 0
+      nil 0
       marker (- 10 depth)
       (+ depth -10))))
 

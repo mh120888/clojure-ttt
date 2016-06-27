@@ -61,8 +61,6 @@
   [board space]
   (and (is-integer? space) (space-free? board (Integer/parseInt space)) (is-space-on-board? board (Integer/parseInt space))))
 
-(def not-empty? (complement empty?))
-
 (defn get-number-of-rows
   [board]
   (int (java.lang.Math/sqrt (count board))))
@@ -81,8 +79,8 @@
       (if (or found-win (empty? coords-to-check))
         found-win
         (let [this-row-as-set (into #{} (vals (select-keys board (into [] (first coords-to-check)))))
-              is-this-a-win (and (not-empty? (first this-row-as-set)) (= 1 (count this-row-as-set)))
-              winning-marker (and is-this-a-win (:marked (first this-row-as-set)))]
+              is-this-a-win (and (seq (first this-row-as-set)) (= 1 (count this-row-as-set)))
+              winning-marker (or (and is-this-a-win (:marked (first this-row-as-set))) nil)]
           (recur (rest coords-to-check) (first (rest coords-to-check)) winning-marker))))))
 
 (defn board-full?

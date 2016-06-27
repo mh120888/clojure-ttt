@@ -94,10 +94,10 @@
 
   (describe "get-winner"
     (it "returns false for an empty board"
-      (should= false (get-winner new-board)))
+      (should= nil (get-winner new-board)))
 
     (it "returns false for a board with a cat's game"
-      (should= false (get-winner board-with-cats-game)))
+      (should= nil (get-winner board-with-cats-game)))
 
     (it "returns the winning marker for a board with a horizontal win"
       (should= "x" (get-winner board-with-horizonal-win)))
