@@ -18,29 +18,24 @@
     (io-print-line io-channel message)
     (io-read io-channel)))
 
-(defn do-you-want-to-go-first
-  ([io-channel]
-    (do-you-want-to-go-first io-channel "Do you want to go first? Please enter y (yes) or n (no)."))
-  ([io-channel message]
-    (if-let [response (get #{"y" "n"} (get-user-input io-channel message))]
-      response
-      (recur io-channel "Sorry, I don't understand. Please enter y (yes) or no (n)."))))
-
-(defn get-board-size
-  ([io-channel]
-    (get-board-size io-channel "What size board would you like to play on? 3x3 (3) or 4x4 (4)?"))
-  ([io-channel message]
-    (if-let [response (get #{"3" "4"} (get-user-input io-channel message))]
-      (Integer/parseInt response)
-      (recur io-channel "Sorry I don't understand. Please tell me which board you want - 3x3 (3) or 4x4 (4)."))))
+(defn ask-user-question
+  [io-channel messages acceptable-responses]
+  (loop [message (first messages)]
+    (if-let [response (get acceptable-responses (get-user-input io-channel message))]
+        response
+        (recur ((comp first reverse) messages)))))
 
 (defn get-human-marker
-  ([io-channel]
-    (get-human-marker io-channel "Which marker would you like to use, \"x\" or \"o\"?"))
-  ([io-channel message]
-    (if-let [response (get #{"x" "y"} (get-user-input io-channel message))]
-      response
-      (recur io-channel "Sorry I don't understand. Please tell me which marker you would like, \"x\" or \"o\"."))))
+  [io-channel]
+  (ask-user-question io-channel ["Which marker would you like to use, \"x\" or \"o\"?" "Sorry I don't understand. Please tell me which marker you would like, \"x\" or \"o\"."] #{"x" "o"}))
+
+(defn do-you-want-to-go-first
+  [io-channel]
+  (ask-user-question io-channel ["Do you want to go first? Please enter y (yes) or n (no)." "Sorry, I don't understand. Please enter y (yes) or no (n)."] #{"y" "n"}))
+
+(defn get-board-size
+  [io-channel]
+  (ask-user-question io-channel ["What size board would you like to play on? 3x3 (3) or 4x4 (4)?" "Sorry I don't understand. Please tell me which board you want - 3x3 (3) or 4x4 (4)."] #{"3" "4"}))
 
 (defn get-current-marker-for-console-display
   [board space]
@@ -59,8 +54,9 @@
         (range (count board)))))))
 
 (defn show-final-result
-  [io-channel final-board winner]
+  [io-channel final-board winner human-marker]
     (print-board io-channel final-board)
-    (if winner
-      (io-print-line io-channel (str winner " won the game."))
+    (condp = winner
+      human-marker (io-print-line io-channel "You won!")
+      (core/get-other-marker human-marker) (io-print-line io-channel "You lost!")
       (io-print-line io-channel "Cat's game.")))

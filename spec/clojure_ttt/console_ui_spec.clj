@@ -41,11 +41,14 @@
                                3 {:marked "x"}, 4 {:marked "x"}, 5 {:marked "o"},
                                6 {:marked "o"}, 7 {:marked "o"}, 8 {:marked "x"}})
 
-    (it "prints out which player won, if there is a winner"
-      (should= "x won the game." (console-ui/show-final-result (TestConsoleIO. "") board-where-x-wins "x")))
+    (it "Tells the human player they won, if they did."
+      (should= "You won!" (console-ui/show-final-result (TestConsoleIO. "") board-where-x-wins "x" "x")))
+
+    (it "Tells the human player they lost, if they lost."
+      (should= "You lost!" (console-ui/show-final-result (TestConsoleIO. "") board-where-x-wins "o" "x")))
 
     (it "prints out that it was a cat's game if there is no winner"
-      (should= "Cat's game." (console-ui/show-final-result (TestConsoleIO. "") board-with-cats-game false))))
+      (should= "Cat's game." (console-ui/show-final-result (TestConsoleIO. "") board-with-cats-game nil "x"))))
 
   (describe "console-ui/get-current-marker-for-console-display"
     (it "returns an understore if the given space is empty"
@@ -67,7 +70,7 @@
 
   (describe "console-ui/get-board-size"
     (it "returns the board size the user chose, if it is valid"
-      (should= 3 (console-ui/get-board-size (TestConsoleIO. "3")))))
+      (should= "3" (console-ui/get-board-size (TestConsoleIO. "3")))))
 
   (describe "console-ui/get-human-marker"
     (it "returns the marker the user chose, if it is valid"
