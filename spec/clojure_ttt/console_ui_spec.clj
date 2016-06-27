@@ -42,13 +42,13 @@
                                6 {:marked "o"}, 7 {:marked "o"}, 8 {:marked "x"}})
 
     (it "Tells the human player they won, if they did."
-      (should= "You won!" (console-ui/show-final-result (TestConsoleIO. "") board-where-x-wins "x" "x")))
+      (should= "You won!" (console-ui/show-final-result (TestConsoleIO. "") board-where-x-wins "x")))
 
     (it "Tells the human player they lost, if they lost."
-      (should= "You lost!" (console-ui/show-final-result (TestConsoleIO. "") board-where-x-wins "o" "x")))
+      (should= "You lost!" (console-ui/show-final-result (TestConsoleIO. "") board-where-x-wins "o")))
 
     (it "prints out that it was a cat's game if there is no winner"
-      (should= "Cat's game." (console-ui/show-final-result (TestConsoleIO. "") board-with-cats-game nil "x"))))
+      (should= "Cat's game." (console-ui/show-final-result (TestConsoleIO. "") board-with-cats-game "x"))))
 
   (describe "console-ui/get-current-marker-for-console-display"
     (it "returns an understore if the given space is empty"

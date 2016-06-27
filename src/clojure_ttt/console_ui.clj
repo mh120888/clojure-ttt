@@ -54,9 +54,9 @@
         (range (count board)))))))
 
 (defn show-final-result
-  [io-channel final-board winner human-marker]
+  [io-channel final-board human-marker]
     (print-board io-channel final-board)
-    (condp = winner
+    (condp = (core/get-winner final-board)
       human-marker (io-print-line io-channel "You won!")
-      (core/get-other-marker human-marker) (io-print-line io-channel "You lost!")
-      (io-print-line io-channel "Cat's game.")))
+      nil (io-print-line io-channel "Cat's game.")
+      (io-print-line io-channel "You lost!")))
