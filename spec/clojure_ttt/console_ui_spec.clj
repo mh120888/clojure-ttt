@@ -10,8 +10,6 @@
   console-ui/IOProtocol
   (io-print-line [type message]
     message)
-  (io-print [type message]
-    message)
   (io-read [type]
     input))
 

@@ -101,5 +101,4 @@
 
 (defn generate-new-board
   [num-of-rows]
-  (let [num-of-spaces (* num-of-rows num-of-rows)]
-    (reduce #(assoc %1 %2 {}) {} (range num-of-spaces))))
+    (reduce #(assoc %1 %2 {}) {} (range (* num-of-rows num-of-rows))))

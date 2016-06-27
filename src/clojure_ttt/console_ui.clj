@@ -3,15 +3,12 @@
 
 (defprotocol IOProtocol
   (io-print-line [type message])
-  (io-print [type message])
   (io-read [type]))
 
 (deftype ConsoleIO []
   IOProtocol
   (io-print-line [type message]
     (println message))
-  (io-print [type message]
-    (print message))
   (io-read [type]
     (read-line)))
 
