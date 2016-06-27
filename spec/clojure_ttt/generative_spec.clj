@@ -30,6 +30,6 @@
       (def possible-games (simulate-possible-games)))
 
     (it "never allows the human player to win"
-      (should= 0 (count (filter #(= human-marker (core/has-won? %)) possible-games))))))
+      (should= 0 (count (filter #(= human-marker (core/get-winner %)) possible-games))))))
 
 (run-specs)

@@ -63,27 +63,27 @@
 
 (def not-empty? (complement empty?))
 
-(defn is-there-a-win?
-  [board num-of-rows spaces-on-board coords-to-check]
-    (loop [coords-to-check coords-to-check
-           row-to-check (first coords-to-check)
-           found-win false]
-      (if (or found-win (empty? coords-to-check))
-        found-win
-        (let [this-row-as-set (into #{} (vals (select-keys board (into [] (first coords-to-check)))))
-              is-this-a-win (and (not-empty? (first this-row-as-set)) (= 1 (count this-row-as-set)))
-              winning-marker (and is-this-a-win (:marked (first this-row-as-set)))]
-          (recur (rest coords-to-check) (first (rest coords-to-check)) winning-marker)))))
-
-(defn has-won?
+(defn get-number-of-rows
   [board]
-  (let [num-of-rows (int (java.lang.Math/sqrt (count board)))
+  (int (java.lang.Math/sqrt (count board))))
+
+(defn get-winner
+  [board]
+  (let [num-of-rows (get-number-of-rows board)
         spaces-on-board (range (count board))
         horizontal-coords (partition num-of-rows spaces-on-board)
         vertical-coords (apply map list horizontal-coords)
         diagonal-coords (generate-diagonal-coords num-of-rows)
         coords-to-check (concat horizontal-coords vertical-coords diagonal-coords)]
-    (is-there-a-win? board num-of-rows spaces-on-board coords-to-check)))
+    (loop [coords-to-check coords-to-check
+           row-to-check (first coords-to-check)
+           found-win nil]
+      (if (or found-win (empty? coords-to-check))
+        found-win
+        (let [this-row-as-set (into #{} (vals (select-keys board (into [] (first coords-to-check)))))
+              is-this-a-win (and (not-empty? (first this-row-as-set)) (= 1 (count this-row-as-set)))
+              winning-marker (and is-this-a-win (:marked (first this-row-as-set)))]
+          (recur (rest coords-to-check) (first (rest coords-to-check)) winning-marker))))))
 
 (defn board-full?
   [board]
@@ -91,7 +91,7 @@
 
 (defn stop-game?
   [board]
-  (or (and (has-won? board) true) (board-full? board)))
+  (or (and (get-winner board) true) (board-full? board)))
 
 (defn mark-space
   [board space mark]

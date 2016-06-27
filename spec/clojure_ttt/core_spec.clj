@@ -92,24 +92,24 @@
     (it "returns false if a space is taken"
       (should= false (space-free? board-with-first-space-marked-with-x 0))))
 
-  (describe "has-won?"
+  (describe "get-winner"
     (it "returns false for an empty board"
-      (should= false (has-won? new-board)))
+      (should= false (get-winner new-board)))
 
     (it "returns false for a board with a cat's game"
-      (should= false (has-won? board-with-cats-game)))
+      (should= false (get-winner board-with-cats-game)))
 
     (it "returns the winning marker for a board with a horizontal win"
-      (should= "x" (has-won? board-with-horizonal-win)))
+      (should= "x" (get-winner board-with-horizonal-win)))
 
     (it "returns the winning marker for a board with a vertical win"
-      (should= "x" (has-won? board-with-vertical-win)))
+      (should= "x" (get-winner board-with-vertical-win)))
 
     (it "returns the winning marker for a board with a diagonal win, top left to bottom right"
-      (should= "x" (has-won? board-with-diagonal-win-top-left-to-bottom-right)))
+      (should= "x" (get-winner board-with-diagonal-win-top-left-to-bottom-right)))
 
     (it "returns the winning marker for a board with a diagonal win, top right to bottom left"
-      (should= "x" (has-won? board-with-diagonal-win-top-right-to-bottom-left))))
+      (should= "x" (get-winner board-with-diagonal-win-top-right-to-bottom-left))))
 
   (describe "stop-game?"
     (it "returns true if there is a winner"
@@ -130,5 +130,9 @@
 
     (it "returns \"o\" if given \"x\""
       (should= "o" (get-other-marker "x")))))
+
+(describe "get-number-of-rows"
+  (it "returns the number of rows given a board"
+    (should= 3 (get-number-of-rows new-board))))
 
 (run-specs)

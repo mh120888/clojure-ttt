@@ -34,7 +34,7 @@
 
 (defn score-board
   [board marker depth]
-  (let [winner (core/has-won? board)]
+  (let [winner (core/get-winner board)]
     (condp = winner
       false 0
       marker (- 10 depth)
