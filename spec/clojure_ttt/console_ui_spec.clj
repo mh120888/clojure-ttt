@@ -1,8 +1,8 @@
 (ns clojure-ttt.console-ui-spec
   (:require [speclj.core :refer :all]
-    [clojure-ttt.board :as board]
-    [clojure-ttt.console-ui :as console-ui]
-    [clojure-ttt.player :as player])
+            [clojure-ttt.board :as board]
+            [clojure-ttt.console-ui :as console-ui]
+            [clojure-ttt.player :as player])
   (:import [clojure_ttt.console_ui ConsoleIO]
            [clojure_ttt.player HumanPlayer]))
 

@@ -1,8 +1,8 @@
 (ns clojure-ttt.game
   (:gen-class)
   (:require [clojure-ttt.board :as board]
-    [clojure-ttt.console-ui :as console-ui]
-    [clojure-ttt.player :as player])
+            [clojure-ttt.console-ui :as console-ui]
+            [clojure-ttt.player :as player])
   (:import [clojure_ttt.console_ui ConsoleIO]
            [clojure_ttt.player HumanPlayer ComputerPlayer]))
 

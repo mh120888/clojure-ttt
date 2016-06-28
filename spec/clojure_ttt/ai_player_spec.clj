@@ -1,9 +1,9 @@
 (ns clojure-ttt.ai-player-spec
   (:require [speclj.core :refer :all]
-    [clojure-ttt.board :as board]
-    [clojure-ttt.ai-player :as ai-player]
-    [clojure-ttt.game :as game]
-    [clojure-ttt.player :as player])
+            [clojure-ttt.board :as board]
+            [clojure-ttt.ai-player :as ai-player]
+            [clojure-ttt.game :as game]
+            [clojure-ttt.player :as player])
   (:import [clojure_ttt.player ComputerPlayer]))
 
 (describe "ComputerPlayer.get-move"
