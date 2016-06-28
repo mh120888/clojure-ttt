@@ -48,6 +48,8 @@
   [board]
   (int (java.lang.Math/sqrt (count board))))
 
+(def memoize-get-number-of-rows (memoize get-number-of-rows))
+
 (defn build-diagonal-lazy-seq
   [current incrementer]
   (let [next-num (+ current incrementer)]
@@ -74,10 +76,16 @@
   [num-of-rows]
   (apply map list (generate-horizontal-coords num-of-rows)))
 
+(defn generate-all-winning-coords
+  [num-of-rows]
+  (concat (generate-horizontal-coords num-of-rows) (generate-vertical-coords num-of-rows) (generate-diagonal-coords num-of-rows)))
+
+(def memoize-generate-all-winning-coords (memoize generate-all-winning-coords))
+
 (defn get-winner
   [board]
-  (let [num-of-rows (get-number-of-rows board)
-        coords-to-check (concat (generate-horizontal-coords num-of-rows) (generate-vertical-coords num-of-rows) (generate-diagonal-coords num-of-rows))]
+  (let [num-of-rows (memoize-get-number-of-rows board)
+        coords-to-check (memoize-generate-all-winning-coords num-of-rows)]
     (loop [coords-to-check coords-to-check
            row-to-check (first coords-to-check)
            winner nil]

@@ -15,21 +15,21 @@
   [map-input]
   (every? integer? (vals map-input)))
 
-(defn find-best-sboard
+(defn find-best-score
   [starting-map max-and-min-functions]
     (reduce (fn [new-map [key value]]
       (cond
         (integer? value) (assoc new-map key value)
         (and (map? value) (= 1 (count value))) (assoc new-map key ((comp second first) value))
         (all-map-values-are-integers? value) (assoc new-map key ((first max-and-min-functions) value))
-        :else (assoc new-map key (find-best-sboard value (reverse max-and-min-functions)))))
+        :else (assoc new-map key (find-best-score value (reverse max-and-min-functions)))))
     {} starting-map))
 
-(defn flatten-sboard-map
-  [sboards]
-  (if (all-map-values-are-integers? sboards)
-    sboards
-    (let [new-map (find-best-sboard sboards [get-min-value get-max-value])]
+(defn flatten-score-map
+  [scores]
+  (if (all-map-values-are-integers? scores)
+    scores
+    (let [new-map (find-best-score scores [get-min-value get-max-value])]
       (recur new-map))))
 
 (defn score-board
