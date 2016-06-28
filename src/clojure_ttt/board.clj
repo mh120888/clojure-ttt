@@ -6,25 +6,6 @@
     "o"
     "x"))
 
-(defn top-right-to-bottom-left-coords
-  ([num-of-rows]
-    (top-right-to-bottom-left-coords (dec num-of-rows) (dec num-of-rows)))
-  ([current incrementer]
-    (let [next-num (+ current incrementer)]
-      (cons current (lazy-seq (top-right-to-bottom-left-coords next-num incrementer))))))
-
-(defn top-left-to-bottom-right-coords
-  ([num-of-rows]
-    (top-left-to-bottom-right-coords 0 num-of-rows))
-  ([current incrementer]
-    (let [next-num (+ (inc current) incrementer)]
-      (cons current (lazy-seq (top-left-to-bottom-right-coords next-num incrementer))))))
-
-(defn generate-diagonal-coords
-  [num-of-rows]
-  (concat (list (take num-of-rows (top-left-to-bottom-right-coords num-of-rows)))
-          (list (take num-of-rows (top-right-to-bottom-left-coords num-of-rows)))))
-
 (defn look-up-space
   [board space]
   (get-in board [space :marked]))
@@ -67,14 +48,36 @@
   [board]
   (int (java.lang.Math/sqrt (count board))))
 
+(defn build-diagonal-lazy-seq
+  [current incrementer]
+  (let [next-num (+ current incrementer)]
+      (cons current (lazy-seq (build-diagonal-lazy-seq next-num incrementer)))))
+
+(defn top-right-to-bottom-left-coords
+  ([num-of-rows]
+    (take num-of-rows (build-diagonal-lazy-seq (dec num-of-rows) (dec num-of-rows)))))
+
+(defn top-left-to-bottom-right-coords
+  ([num-of-rows]
+    (take num-of-rows (build-diagonal-lazy-seq 0 (inc num-of-rows)))))
+
+(defn generate-diagonal-coords
+  [num-of-rows]
+  (concat (list (top-left-to-bottom-right-coords num-of-rows))
+          (list (top-right-to-bottom-left-coords num-of-rows))))
+
+(defn generate-horizontal-coords
+  [num-of-rows]
+  (partition num-of-rows (range (* num-of-rows num-of-rows))))
+
+(defn generate-vertical-coords
+  [num-of-rows]
+  (apply map list (generate-horizontal-coords num-of-rows)))
+
 (defn get-winner
   [board]
   (let [num-of-rows (get-number-of-rows board)
-        spaces-on-board (range (count board))
-        horizontal-coords (partition num-of-rows spaces-on-board)
-        vertical-coords (apply map list horizontal-coords)
-        diagonal-coords (generate-diagonal-coords num-of-rows)
-        coords-to-check (concat horizontal-coords vertical-coords diagonal-coords)]
+        coords-to-check (concat (generate-horizontal-coords num-of-rows) (generate-vertical-coords num-of-rows) (generate-diagonal-coords num-of-rows))]
     (loop [coords-to-check coords-to-check
            row-to-check (first coords-to-check)
            winner nil]

@@ -165,6 +165,28 @@
       (should= "x" (get-other-marker "o")))
 
     (it "returns \"o\" if given \"x\""
-      (should= "o" (get-other-marker "x")))))
+      (should= "o" (get-other-marker "x"))))
+
+  (describe "generate-horizontal-coords"
+    (it "returns a list of lists, each containing a horizontal row of coordinates"
+      (should= `((0 1 2) (3 4 5) (6 7 8)) (generate-horizontal-coords 3))))
+
+  (describe "generate-vertical-coords"
+    (it "returns a list of lists, each containing a vertical column of coordinates"
+      (should= `((0 3 6) (1 4 7) (2 5 8)) (generate-vertical-coords 3))))
+
+  (describe "top-right-to-bottom-left-coords"
+    (it "returns a list containing 2, 4, 6 for a board with 3 rows"
+      (should= `(2 4 6) (top-right-to-bottom-left-coords 3)))
+
+    (it "returns a list containing 3, 6, 9, 12 for a board with 4 rows"
+      (should= `(3 6 9 12) (top-right-to-bottom-left-coords 4))))
+
+  (describe "top-left-to-bottom-right-coords"
+    (it "returns a list containing 0, 4, 8 for a board with 3 rows"
+      (should= `(0 4 8) (top-left-to-bottom-right-coords 3)))
+
+    (it "returns a list containing 0, 5, 10, 15 for a board with 4 rows"
+      (should= `(0 5 10 15) (top-left-to-bottom-right-coords 4)))))
 
 (run-specs)
