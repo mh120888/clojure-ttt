@@ -33,13 +33,29 @@
   (describe "console-ui/show-final-result"
 
     (before
-      (def board-where-x-wins {0 {:marked "o"}, 1 {:marked "o"}, 2 {:marked "x"},
-                               3 {:marked "o"}, 4 {:marked "x"}, 5 {:marked "o"},
-                               6 {:marked "x"}, 7 {:marked "o"}, 8 {:marked "x"}}))
+      (def board-where-x-wins
+        (-> new-board
+            (board/mark-space 0 "o")
+            (board/mark-space 1 "o")
+            (board/mark-space 2 "x")
+            (board/mark-space 3 "o")
+            (board/mark-space 4 "x")
+            (board/mark-space 5 "o")
+            (board/mark-space 6 "x")
+            (board/mark-space 7 "o")
+            (board/mark-space 8 "x")))
 
-      (def board-with-cats-game {0 {:marked "o"}, 1 {:marked "o"}, 2 {:marked "x"},
-                                 3 {:marked "x"}, 4 {:marked "x"}, 5 {:marked "o"},
-                                 6 {:marked "o"}, 7 {:marked "o"}, 8 {:marked "x"}})
+      (def board-with-cats-game
+        (-> new-board
+            (board/mark-space 0 "o")
+            (board/mark-space 1 "o")
+            (board/mark-space 2 "x")
+            (board/mark-space 3 "x")
+            (board/mark-space 4 "x")
+            (board/mark-space 5 "o")
+            (board/mark-space 6 "o")
+            (board/mark-space 7 "o")
+            (board/mark-space 8 "x"))))
 
     (it "Tells the human player they won, if they did."
       (should= "You won!" (console-ui/show-final-result (TestConsoleIO. "") board-where-x-wins "x")))
@@ -65,7 +81,7 @@
       (should= "3" (console-ui/get-user-input (TestConsoleIO. "3") message))))
 
   (describe "console-ui/do-you-want-to-go-first"
-    (it "returns y if a user inputs y"
+    (it "returns whether a user wants to go first, if given valid input"
       (should= "y" (console-ui/do-you-want-to-go-first (TestConsoleIO. "y")))))
 
   (describe "console-ui/get-board-size"

@@ -53,13 +53,13 @@
   [board space]
   ((comp nil? look-up-space) board space))
 
-(defn is-integer?
+(defn is-integer-as-string?
   [space]
   (integer? (read-string space)))
 
 (defn valid-move?
   [board space]
-  (and (is-integer? space)
+  (and (is-integer-as-string? space)
        (space-free? board (Integer/parseInt space))
        (is-space-on-board? board (Integer/parseInt space))))
 

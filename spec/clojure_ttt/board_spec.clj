@@ -42,11 +42,11 @@
 
   (describe "find-free-spaces"
     (it "returns the board with only the free spaces left"
-      (should= {1 {}, 2 {}, 3 {}, 4 {}, 5 {}, 6 {}, 7 {}, 8 {}} (find-free-spaces (mark-space new-board 0 "x")))))
+      (should= 8 (count (find-free-spaces (mark-space new-board 0 "x"))))))
 
   (describe "find-taken-spaces"
-    (it "returns an empty map when called with a new board"
-      (should= {} (find-taken-spaces new-board)))
+    (it "finds no empty spaces when called with a new board"
+      (should= 0 (count (find-taken-spaces new-board))))
 
     (it "returns the board with only the taken spaces"
       (should= {0 {:marked "x"}} (find-taken-spaces (mark-space new-board 0 "x")))))
@@ -78,12 +78,12 @@
     (it "returns false if the input is not a board space at all"
       (should= false (valid-move? new-board "not a space"))))
 
-  (describe "is-integer?"
+  (describe "is-integer-as-string?"
     (it "returns true if given a string representation of an integer"
-      (should= true (is-integer? "2")))
+      (should= true (is-integer-as-string? "2")))
 
     (it "returns false if given any other string"
-      (should= false (is-integer? "not an int"))))
+      (should= false (is-integer-as-string? "2.0"))))
 
   (describe "space-free?"
     (it "returns true if a space is empty"
@@ -93,10 +93,10 @@
       (should= false (space-free? board-with-first-space-marked-with-x 0))))
 
   (describe "get-winner"
-    (it "returns false for an empty board"
+    (it "returns nil for an empty board"
       (should= nil (get-winner new-board)))
 
-    (it "returns false for a board with a cat's game"
+    (it "returns nil for a board with a cat's game"
       (should= nil (get-winner board-with-cats-game)))
 
     (it "returns the winning marker for a board with a horizontal win"
@@ -110,6 +110,10 @@
 
     (it "returns the winning marker for a board with a diagonal win, top right to bottom left"
       (should= "x" (get-winner board-with-diagonal-win-top-right-to-bottom-left))))
+
+  (describe "get-number-of-rows"
+    (it "returns the number of rows given a board"
+      (should= 3 (get-number-of-rows new-board))))
 
   (describe "game-over?"
     (it "returns true if there is a winner"
@@ -130,9 +134,5 @@
 
     (it "returns \"o\" if given \"x\""
       (should= "o" (get-other-marker "x")))))
-
-(describe "get-number-of-rows"
-  (it "returns the number of rows given a board"
-    (should= 3 (get-number-of-rows new-board))))
 
 (run-specs)
