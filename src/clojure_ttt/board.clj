@@ -1,4 +1,4 @@
-(ns clojure-ttt.core)
+(ns clojure-ttt.board)
 
 (defn get-other-marker
   [marker]
@@ -89,7 +89,7 @@
   [board]
   (empty? (find-free-spaces board)))
 
-(defn stop-game?
+(defn game-over?
   [board]
   (or (and (get-winner board) true) (board-full? board)))
 

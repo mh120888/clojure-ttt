@@ -6,6 +6,6 @@
   :dependencies [[org.clojure/clojure "1.7.0-RC2"]]
   :profiles {:dev {:dependencies [[speclj "3.3.1"]]}}
   :plugins [[speclj "3.3.1"]]
-  :repl-options {:init (load-file "src/clojure_ttt/core.clj" ) }
+  :repl-options {:init (load-file "src/clojure_ttt/board.clj" ) }
   :test-paths ["spec"]
   :main clojure-ttt.game)

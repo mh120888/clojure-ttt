@@ -1,6 +1,6 @@
 (ns clojure-ttt.console-ui-spec
   (:require [speclj.core :refer :all]
-    [clojure-ttt.core :as core]
+    [clojure-ttt.board :as board]
     [clojure-ttt.console-ui :as console-ui]
     [clojure-ttt.player :as player])
   (:import [clojure_ttt.console_ui ConsoleIO]
@@ -18,14 +18,14 @@
     (with-out-str (it)))
 
   (before-all
-    (def new-board (core/generate-new-board 3)))
+    (def new-board (board/generate-new-board 3)))
 
   (describe "console-ui/print-board"
     (it "prints out a new board in a nice format"
       (should= "_ _ _\n_ _ _\n_ _ _\n" (console-ui/print-board (TestConsoleIO. "") new-board)))
 
     (before
-      (def board-in-progress (core/mark-space new-board 0 "x")))
+      (def board-in-progress (board/mark-space new-board 0 "x")))
 
     (it "prints out a board in progress in a nice format"
       (should= "x _ _\n_ _ _\n_ _ _\n" (console-ui/print-board (TestConsoleIO. "") board-in-progress))))
@@ -37,9 +37,9 @@
                                3 {:marked "o"}, 4 {:marked "x"}, 5 {:marked "o"},
                                6 {:marked "x"}, 7 {:marked "o"}, 8 {:marked "x"}}))
 
-    (def board-with-cats-game {0 {:marked "o"}, 1 {:marked "o"}, 2 {:marked "x"},
-                               3 {:marked "x"}, 4 {:marked "x"}, 5 {:marked "o"},
-                               6 {:marked "o"}, 7 {:marked "o"}, 8 {:marked "x"}})
+      (def board-with-cats-game {0 {:marked "o"}, 1 {:marked "o"}, 2 {:marked "x"},
+                                 3 {:marked "x"}, 4 {:marked "x"}, 5 {:marked "o"},
+                                 6 {:marked "o"}, 7 {:marked "o"}, 8 {:marked "x"}})
 
     (it "Tells the human player they won, if they did."
       (should= "You won!" (console-ui/show-final-result (TestConsoleIO. "") board-where-x-wins "x")))

@@ -1,5 +1,5 @@
 (ns clojure-ttt.ai-player
-  (:require [clojure-ttt.core :as core]))
+  (:require [clojure-ttt.board :as board]))
 
 (declare negamax)
 
@@ -15,26 +15,26 @@
   [map-input]
   (every? integer? (vals map-input)))
 
-(defn find-best-score
+(defn find-best-sboard
   [starting-map max-and-min-functions]
     (reduce (fn [new-map [key value]]
       (cond
         (integer? value) (assoc new-map key value)
         (and (map? value) (= 1 (count value))) (assoc new-map key ((comp second first) value))
         (all-map-values-are-integers? value) (assoc new-map key ((first max-and-min-functions) value))
-        :else (assoc new-map key (find-best-score value (reverse max-and-min-functions)))))
+        :else (assoc new-map key (find-best-sboard value (reverse max-and-min-functions)))))
     {} starting-map))
 
-(defn flatten-score-map
-  [scores]
-  (if (all-map-values-are-integers? scores)
-    scores
-    (let [new-map (find-best-score scores [get-min-value get-max-value])]
+(defn flatten-sboard-map
+  [sboards]
+  (if (all-map-values-are-integers? sboards)
+    sboards
+    (let [new-map (find-best-sboard sboards [get-min-value get-max-value])]
       (recur new-map))))
 
-(defn score-board
+(defn sboard-board
   [board marker depth]
-  (let [winner (core/get-winner board)]
+  (let [winner (board/get-winner board)]
     (condp = winner
       nil 0
       marker (- 10 depth)
@@ -42,11 +42,11 @@
 
 (defn play-next-round-of-moves
   [board depth marker color free-spaces]
-    (into {} (map #(assoc % 1 (negamax (core/mark-space board (first %) marker) (inc depth) (core/get-other-marker marker) color)) free-spaces)))
+    (into {} (map #(assoc % 1 (negamax (board/mark-space board (first %) marker) (inc depth) (board/get-other-marker marker) color)) free-spaces)))
 
 (defn negamax
   [board depth marker color]
-  (if (core/stop-game? board)
-    (* color (score-board board marker depth))
-    (let [free-spaces (core/find-free-spaces board)]
+  (if (board/game-over? board)
+    (* color (sboard-board board marker depth))
+    (let [free-spaces (board/find-free-spaces board)]
       (play-next-round-of-moves board depth marker (* -1 color) free-spaces))))

@@ -1,6 +1,6 @@
-(ns clojure-ttt.core-spec
+(ns clojure-ttt.board-spec
   (:require [speclj.core :refer :all]
-    [clojure-ttt.core :refer :all]))
+    [clojure-ttt.board :refer :all]))
 
 (describe "Modeling a tic tac toe board"
 
@@ -111,18 +111,18 @@
     (it "returns the winning marker for a board with a diagonal win, top right to bottom left"
       (should= "x" (get-winner board-with-diagonal-win-top-right-to-bottom-left))))
 
-  (describe "stop-game?"
+  (describe "game-over?"
     (it "returns true if there is a winner"
-      (should= true (stop-game? board-with-horizonal-win)))
+      (should= true (game-over? board-with-horizonal-win)))
 
     (it "returns true if the board is full"
-      (should= true (stop-game? board-with-cats-game)))
+      (should= true (game-over? board-with-cats-game)))
 
     (it "returns false for an empty board"
-      (should= false (stop-game? new-board)))
+      (should= false (game-over? new-board)))
 
     (it "returns false for a game in progress that has no winner yet"
-      (should= false (stop-game? board-with-first-space-marked-with-x))))
+      (should= false (game-over? board-with-first-space-marked-with-x))))
 
   (describe "get-other-marker"
     (it "returns \"x\" if given \"o\""

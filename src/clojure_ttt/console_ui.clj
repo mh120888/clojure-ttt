@@ -1,5 +1,5 @@
 (ns clojure-ttt.console-ui
-  (:require [clojure-ttt.core :as core]))
+  (:require [clojure-ttt.board :as board]))
 
 (defprotocol IOProtocol
   (io-print-line [type message])
@@ -39,7 +39,7 @@
 
 (defn get-current-marker-for-console-display
   [board space]
-  (if-let [result (core/look-up-space board space)]
+  (if-let [result (board/look-up-space board space)]
     result
     "_"))
 
@@ -56,7 +56,7 @@
 (defn show-final-result
   [io-channel final-board human-marker]
     (print-board io-channel final-board)
-    (condp = (core/get-winner final-board)
+    (condp = (board/get-winner final-board)
       human-marker (io-print-line io-channel "You won!")
       nil (io-print-line io-channel "Cat's game.")
       (io-print-line io-channel "You lost!")))

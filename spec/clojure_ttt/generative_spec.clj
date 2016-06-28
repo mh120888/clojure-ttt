@@ -1,6 +1,6 @@
 (ns clojure-ttt.generative-spec
   (:require [speclj.core :refer :all]
-            [clojure-ttt.core :as core]
+            [clojure-ttt.board :as board]
             [clojure-ttt.player :as player])
   (:import [clojure_ttt.player ComputerPlayer]))
 
@@ -10,19 +10,19 @@
 
 (defn simulate-possible-human-moves
   [boards human-marker]
-  ((comp vec flatten) (map (fn [board] (map #(core/mark-space board % human-marker) (keys (core/find-free-spaces board)))) boards)))
+  ((comp vec flatten) (map (fn [board] (map #(board/mark-space board % human-marker) (keys (board/find-free-spaces board)))) boards)))
 
 (defn simulate-computer-moves
   [boards ai-marker]
-  ((comp vec flatten) (map (fn [board] (core/mark-space board (player/get-move computer-player board ai-marker) ai-marker)) boards)))
+  ((comp vec flatten) (map (fn [board] (board/mark-space board (player/get-move computer-player board ai-marker) ai-marker)) boards)))
 
 (defn simulate-possible-games
-  ([] (simulate-possible-games [ai-marker human-marker] [simulate-computer-moves simulate-possible-human-moves] [(core/generate-new-board 3)] []))
+  ([] (simulate-possible-games [ai-marker human-marker] [simulate-computer-moves simulate-possible-human-moves] [(board/generate-new-board 3)] []))
   ([markers simulate-move-functions in-progress-boards completed-boards]
     (if (empty? in-progress-boards)
       completed-boards
       (let [new-in-progress-boards ((first simulate-move-functions) in-progress-boards (first markers))]
-        (recur (reverse markers) (reverse simulate-move-functions) (vec (remove #(core/stop-game? %) new-in-progress-boards)) ((comp vec concat) completed-boards (vec (filter #(core/stop-game? %) new-in-progress-boards))))))))
+        (recur (reverse markers) (reverse simulate-move-functions) (vec (remove #(board/game-over? %) new-in-progress-boards)) ((comp vec concat) completed-boards (vec (filter #(board/game-over? %) new-in-progress-boards))))))))
 
 (tags :slow
   (describe "get-move for ComputerPlayer"
@@ -30,6 +30,6 @@
       (def possible-games (simulate-possible-games)))
 
     (it "never allows the human player to win"
-      (should= 0 (count (filter #(= human-marker (core/get-winner %)) possible-games))))))
+      (should= 0 (count (filter #(= human-marker (board/get-winner %)) possible-games))))))
 
 (run-specs)
