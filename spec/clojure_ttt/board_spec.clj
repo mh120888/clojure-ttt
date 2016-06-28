@@ -1,6 +1,6 @@
 (ns clojure-ttt.board-spec
   (:require [speclj.core :refer :all]
-    [clojure-ttt.board :refer :all]))
+            [clojure-ttt.board :refer :all]))
 
 (describe "Modeling a tic tac toe board"
 
@@ -9,21 +9,53 @@
 
     (def board-with-first-space-marked-with-x (mark-space new-board 0 "x"))
 
-    (def board-with-cats-game {0 {:marked "x"}, 1 {:marked "o"}, 2 {:marked "o"},
-                               3 {:marked "o"}, 4 {:marked "x"}, 5 {:marked "x"},
-                               6 {:marked "x"}, 7 {:marked "o"}, 8 {:marked "o"}})
+    (def board-with-cats-game
+      (-> new-board
+          (mark-space 0 "o")
+          (mark-space 1 "o")
+          (mark-space 2 "x")
+          (mark-space 3 "x")
+          (mark-space 4 "x")
+          (mark-space 5 "o")
+          (mark-space 6 "o")
+          (mark-space 7 "o")
+          (mark-space 8 "x")))
 
-    (def board-with-horizonal-win {3 {:marked "x"}, 4 {:marked "x"}, 5 {:marked "x"}, 0 {:marked "o"}, 1 {}, 2 {}, 6 {}, 7 {}, 8 {}})
+    (def board-with-horizonal-win
+      (-> new-board
+          (mark-space 3 "x")
+          (mark-space 4 "x")
+          (mark-space 5 "x")))
 
-    (def board-with-vertical-win {3 {:marked "x"}, 4 {:marked "x"}, 5 {:marked "x"}, 0 {:marked "o"}, 1 {}, 2 {}, 6 {}, 7 {}, 8 {}})
+    (def board-with-vertical-win
+      (-> new-board
+          (mark-space 0 "x")
+          (mark-space 3 "x")
+          (mark-space 6 "x")))
 
-    (def board-with-diagonal-win-top-left-to-bottom-right {0 {:marked "x"}, 1 {:marked "o"}, 2 {:marked "x"},
-                                                           3 {:marked "o"}, 4 {:marked "x"}, 5 {:marked "o"},
-                                                           6 {:marked "x"}, 7 {:marked "o"}, 8 {:marked "x"}})
+    (def board-with-diagonal-win-top-left-to-bottom-right
+      (-> new-board
+          (mark-space 0 "o")
+          (mark-space 1 "o")
+          (mark-space 2 "x")
+          (mark-space 3 "o")
+          (mark-space 4 "x")
+          (mark-space 5 "o")
+          (mark-space 6 "x")
+          (mark-space 7 "o")
+          (mark-space 8 "x")))
 
-    (def board-with-diagonal-win-top-right-to-bottom-left {0 {:marked "o"}, 1 {:marked "o"}, 2 {:marked "x"},
-                                                           3 {:marked "o"}, 4 {:marked "x"}, 5 {:marked "o"},
-                                                           6 {:marked "x"}, 7 {:marked "o"}, 8 {:marked "x"}}))
+    (def board-with-diagonal-win-top-right-to-bottom-left
+      (-> new-board
+          (mark-space 0 "o")
+          (mark-space 1 "o")
+          (mark-space 2 "x")
+          (mark-space 3 "o")
+          (mark-space 4 "x")
+          (mark-space 5 "o")
+          (mark-space 6 "x")
+          (mark-space 7 "o")
+          (mark-space 8 "x"))))
 
   (describe "generate-new-board"
     (it "creates a new board with the correct number of spaces"
@@ -49,14 +81,14 @@
       (should= 0 (count (find-taken-spaces new-board))))
 
     (it "returns the board with only the taken spaces"
-      (should= {0 {:marked "x"}} (find-taken-spaces (mark-space new-board 0 "x")))))
+      (should= 1 (count (find-taken-spaces (mark-space new-board 0 "x"))))))
 
   (describe "find-spaces-taken-by"
-    (it "returns an empty map if there are no spaces taken by the given marker"
-      (should= {} (find-spaces-taken-by new-board "x")))
+    (it "returns an empty collection if there are no spaces taken by the given marker"
+      (should= 0 (count (find-spaces-taken-by new-board "x"))))
 
     (it "returns the board with only the spaces taken by the given marker"
-      (should= {0 {:marked "x"}} (find-spaces-taken-by (mark-space new-board 0 "x") "x"))))
+      (should= 1 (count (find-spaces-taken-by board-with-first-space-marked-with-x "x")))))
 
   (describe "board-full?"
     (it "returns a false for a new board"
