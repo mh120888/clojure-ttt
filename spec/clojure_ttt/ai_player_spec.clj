@@ -10,23 +10,45 @@
   (before-all
     (def computer-player (ComputerPlayer.))
 
-    (def board-with-only-one-space-open {0 {:marked "x"}, 1 {:marked "o"}, 2 {},
-                                         3 {:marked "o"}, 4 {:marked "x"}, 5 {:marked "x"},
-                                         6 {:marked "x"}, 7 {:marked "o"}, 8 {:marked "o"}})
+    (def new-board (board/generate-new-board 3))
 
-    (def board-with-imminent-win {0 {:marked "x"}, 1 {:marked "o"}, 2 {:marked "o"},
-                                  3 {:marked "o"}, 4 {:marked "x"}, 5 {},
-                                  6 {:marked "x"}, 7 {:marked "o"}, 8 {}})
+    (def board-with-only-one-space-open
+      (-> (board/generate-new-board 3)
+          (board/mark-space 0 "x")
+          (board/mark-space 1 "o")
+          (board/mark-space 3 "o")
+          (board/mark-space 4 "x")
+          (board/mark-space 5 "x")
+          (board/mark-space 6 "x")
+          (board/mark-space 7 "o")
+          (board/mark-space 8 "o")))
 
-    (def board-with-imminent-loss {0 {:marked "x"}, 1 {:marked "x"}, 2 {:marked "o"},
-                                   3 {:marked "o"}, 4 {:marked "o"}, 5 {},
-                                   6 {:marked "x"}, 7 {:marked "o"}, 8 {}})
+    (def board-with-imminent-win
+      (-> (board/generate-new-board 3)
+          (board/mark-space 0 "x")
+          (board/mark-space 1 "o")
+          (board/mark-space 2 "o")
+          (board/mark-space 3 "o")
+          (board/mark-space 4 "x")
+          (board/mark-space 6 "x")
+          (board/mark-space 7 "o")))
 
-    (def another-board-with-imminent-loss {0 {           }, 1 {           }, 2 {           },
-                                           3 {:marked "x"}, 4 {:marked "o"}, 5 {           },
-                                           6 {:marked "o"}, 7 {           }, 8 {:marked "x"}})
+    (def board-with-imminent-loss
+      (-> (board/generate-new-board 3)
+          (board/mark-space 0 "x")
+          (board/mark-space 1 "x")
+          (board/mark-space 2 "o")
+          (board/mark-space 3 "o")
+          (board/mark-space 4 "o")
+          (board/mark-space 6 "x")
+          (board/mark-space 7 "o")))
 
-    (def new-board (board/generate-new-board 3)))
+    (def another-board-with-imminent-loss
+      (-> (board/generate-new-board 3)
+          (board/mark-space 3 "x")
+          (board/mark-space 4 "o")
+          (board/mark-space 6 "o")
+          (board/mark-space 8 "x"))))
 
   (it "returns the only possible move on a board that has only one available space"
     (should= 2 (player/get-move computer-player board-with-only-one-space-open "x")))
@@ -40,24 +62,40 @@
   (it "returns the move that will prevent the opponent from winning"
     (should= 2 (player/get-move computer-player another-board-with-imminent-loss "x"))))
 
-(describe "ai-player/sboard-board"
+(describe "ai-player/score-board"
   (before-all
-    (def board-where-x-wins {0 {:marked "o"}, 1 {:marked "o"}, 2 {:marked "x"},
-                             3 {:marked "o"}, 4 {:marked "x"}, 5 {:marked "o"},
-                             6 {:marked "x"}, 7 {:marked "o"}, 8 {:marked "x"}})
+    (def board-where-x-wins
+      (-> new-board
+          (board/mark-space 0 "o")
+          (board/mark-space 1 "o")
+          (board/mark-space 2 "x")
+          (board/mark-space 3 "o")
+          (board/mark-space 4 "x")
+          (board/mark-space 5 "o")
+          (board/mark-space 6 "x")
+          (board/mark-space 7 "o")
+          (board/mark-space 8 "x")))
 
-    (def board-with-cats-game {0 {:marked "o"}, 1 {:marked "o"}, 2 {:marked "x"},
-                               3 {:marked "x"}, 4 {:marked "x"}, 5 {:marked "o"},
-                               6 {:marked "o"}, 7 {:marked "o"}, 8 {:marked "x"}}))
+    (def board-with-cats-game
+      (-> new-board
+          (board/mark-space 0 "o")
+          (board/mark-space 1 "o")
+          (board/mark-space 2 "x")
+          (board/mark-space 3 "x")
+          (board/mark-space 4 "x")
+          (board/mark-space 5 "o")
+          (board/mark-space 6 "o")
+          (board/mark-space 7 "o")
+          (board/mark-space 8 "x"))))
 
   (it "gives a positive sboard if the given player has won"
-    (should= true (< 0 (ai-player/sboard-board board-where-x-wins "x" 1))))
+    (should= true (< 0 (ai-player/score-board board-where-x-wins "x" 1))))
 
   (it "gives a negative sboard if the given player has lost"
-    (should= false (< 0 (ai-player/sboard-board board-where-x-wins "o" 1))))
+    (should= false (< 0 (ai-player/score-board board-where-x-wins "o" 1))))
 
   (it "returns 0 if it's a cat's game"
-    (should= 0 (ai-player/sboard-board board-with-cats-game "x" 1))))
+    (should= 0 (ai-player/score-board board-with-cats-game "x" 1))))
 
 (describe "ai-player/flatten-sboard-map"
   (it "returns the a map as-is if it is not nested"

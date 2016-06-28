@@ -32,7 +32,7 @@
     (let [new-map (find-best-sboard sboards [get-min-value get-max-value])]
       (recur new-map))))
 
-(defn sboard-board
+(defn score-board
   [board marker depth]
   (let [winner (board/get-winner board)]
     (condp = winner
@@ -47,6 +47,6 @@
 (defn negamax
   [board depth marker color]
   (if (board/game-over? board)
-    (* color (sboard-board board marker depth))
+    (* color (score-board board marker depth))
     (let [free-spaces (board/find-free-spaces board)]
       (play-next-round-of-moves board depth marker (* -1 color) free-spaces))))
