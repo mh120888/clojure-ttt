@@ -40,13 +40,16 @@
       marker (- 10 depth)
       (+ depth -10))))
 
+
 (defn play-next-round-of-moves
   [board depth marker color free-spaces]
     (into {} (map #(assoc % 1 (negamax (board/mark-space board (first %) marker) (inc depth) (board/get-other-marker marker) color)) free-spaces)))
+
+(def memoize-play-next-round-of-moves (memoize play-next-round-of-moves))
 
 (defn negamax
   [board depth marker color]
   (if (board/game-over? board)
     (* color (score-board board marker depth))
     (let [free-spaces (board/find-free-spaces board)]
-      (play-next-round-of-moves board depth marker (* -1 color) free-spaces))))
+      (memoize-play-next-round-of-moves board depth marker (* -1 color) free-spaces))))

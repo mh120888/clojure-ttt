@@ -10,8 +10,8 @@
   Player
   (get-move [type board marker]
     (let [all-game-possibilities (ai-player/negamax board 0 marker 1)
-          all-possible-next-moves-and-boards (ai-player/flatten-score-map all-game-possibilities)]
-      ((comp first last) (sort-by val all-possible-next-moves-and-boards)))))
+          all-possible-next-moves-and-scores (ai-player/flatten-score-map all-game-possibilities)]
+      ((comp first last) (sort-by val all-possible-next-moves-and-scores)))))
 
 (deftype HumanPlayer [io-channel]
   Player
