@@ -19,7 +19,7 @@
 (defn simulate-possible-games
   ([] (simulate-possible-games [human-marker ai-marker] [simulate-possible-human-moves simulate-computer-moves] [(board/generate-new-board 3)] []))
   ([markers simulate-move-functions in-progress-boards completed-boards]
-    (if (empty? in-progress-boards)
+    (if (or (empty? in-progress-boards) (< 1000 (count in-progress-boards)))
       completed-boards
       (let [new-in-progress-boards ((first simulate-move-functions) in-progress-boards (first markers))]
         (recur (reverse markers) (reverse simulate-move-functions) (vec (remove #(board/game-over? %) new-in-progress-boards)) ((comp vec concat) completed-boards (vec (filter #(board/game-over? %) new-in-progress-boards))))))))

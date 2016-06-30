@@ -118,3 +118,13 @@
 (describe "ai-player/get-min-value"
   (it "returns the lowest value from a map"
     (should= 1 (ai-player/get-min-value {4 6, 3 4, 6 6, 10 1}))))
+
+(describe "ai-player/get-depth-limit"
+  (it "returns 5 for a 3x3 board"
+    (should= 5 (ai-player/get-depth-limit (board/generate-new-board 3))))
+
+  (it "returns 6 for a 4x4 board"
+    (should= 6 (ai-player/get-depth-limit (board/generate-new-board 4))))
+
+  (it "returns 5 as a default"
+    (should= 5 (ai-player/get-depth-limit (board/generate-new-board 1)))))
