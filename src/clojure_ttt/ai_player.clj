@@ -39,7 +39,7 @@
 
 (defn minmax
   [board depth marker color]
-  (if (or (board/game-over? board) (< (get-depth-limit board) depth))
+  (if (or (< (get-depth-limit board) depth) (board/game-over? board))
     (* color (score-board board marker depth))
     (->> (memoize-get-possible-game-states board marker)
          (reduce (fn [new-map [space possible-board]] (assoc new-map space (minmax possible-board (inc depth) (board/get-other-marker marker) (- color)))) {})
