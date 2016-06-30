@@ -9,6 +9,11 @@
 
     (def board-with-first-space-marked-with-x (mark-space new-board 0 "x"))
 
+    (def board-with-two-xs-in-a-row
+      (-> board-with-first-space-marked-with-x
+          (mark-space 4 "o")
+          (mark-space 1 "x")))
+
     (def board-with-cats-game
       (-> new-board
           (mark-space 0 "o")
@@ -142,10 +147,6 @@
 
     (it "returns the winning marker for a board with a diagonal win, top right to bottom left"
       (should= "x" (get-winner board-with-diagonal-win-top-right-to-bottom-left))))
-
-  (describe "get-number-of-rows"
-    (it "returns the number of rows given a board"
-      (should= 3 (get-number-of-rows new-board))))
 
   (describe "game-over?"
     (it "returns true if there is a winner"

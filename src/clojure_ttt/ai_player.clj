@@ -49,7 +49,7 @@
 
 (defn negamax
   [board depth marker color]
-  (if (board/game-over? board)
+  (if (or (board/game-over? board) (< 5 depth))
     (* color (score-board board marker depth))
     (let [free-spaces (board/find-free-spaces board)]
       (memoize-play-next-round-of-moves board depth marker (* -1 color) free-spaces))))
