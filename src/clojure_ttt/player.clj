@@ -9,9 +9,7 @@
 (deftype ComputerPlayer []
   Player
   (get-move [type board marker]
-    (let [all-game-possibilities (ai-player/negamax board 0 marker 1)
-          all-possible-next-moves-and-scores (ai-player/flatten-score-map all-game-possibilities)]
-      ((comp first last) (sort-by val all-possible-next-moves-and-scores)))))
+          (ai-player/memoize-minmax board 0 marker 1)))
 
 (deftype HumanPlayer [io-channel]
   Player
