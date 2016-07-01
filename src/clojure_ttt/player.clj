@@ -9,7 +9,7 @@
 (deftype ComputerPlayer []
   Player
   (get-move [type board marker]
-          (ai-player/memoize-minmax board 0 marker 1)))
+          (ai-player/memo-minmax board marker)))
 
 (deftype HumanPlayer [io-channel]
   Player

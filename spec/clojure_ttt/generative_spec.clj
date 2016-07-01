@@ -24,12 +24,13 @@
       (let [new-in-progress-boards ((first simulate-move-functions) in-progress-boards (first markers))]
         (recur (reverse markers) (reverse simulate-move-functions) (vec (remove #(board/game-over? %) new-in-progress-boards)) ((comp vec concat) completed-boards (vec (filter #(board/game-over? %) new-in-progress-boards))))))))
 
-(tags :slow
+; (tags :slow
   (describe "get-move for ComputerPlayer"
     (before
       (def possible-games (simulate-possible-games)))
 
     (it "never allows the human player to win"
-      (should= 0 (count (filter #(= human-marker (board/get-winner %)) possible-games))))))
+      (should= 0 (count (filter #(= human-marker (board/get-winner %)) possible-games)))))
+  ; )
 
 (run-specs)
