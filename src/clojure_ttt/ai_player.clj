@@ -43,26 +43,34 @@
     >
     <))
 
+(defn alpha-beta-max
+  [build-up-this-map depth marker color alpha beta possible-boards]
+    (let [current-board (second (first possible-boards))
+          value (minmax current-board (inc depth) (board/get-other-marker marker) (- color) alpha beta)
+          space (first (first possible-boards))
+          new-alpha (max alpha value)
+          new-map (assoc build-up-this-map space value)]
+            (if (or (>= new-alpha beta) (empty? (rest possible-boards)))
+              new-map
+              (recur new-map depth marker color new-alpha beta (rest possible-boards)))))
+
+(defn alpha-beta-min
+  [build-up-this-map depth marker color alpha beta possible-boards]
+  (let [current-board (second (first possible-boards))
+        value (minmax current-board (inc depth) (board/get-other-marker marker) (- color) alpha beta)
+        space (first (first possible-boards))
+        new-beta (min beta value)
+        new-map (assoc build-up-this-map space value)]
+          (if (or (>= alpha new-beta) (empty? (rest possible-boards)))
+            new-map
+            (recur new-map depth marker color alpha new-beta (rest possible-boards)))))
+
 (defn alpha-beta
   ([depth marker color alpha beta possible-boards] (alpha-beta {} depth marker color alpha beta possible-boards))
   ([build-up-this-map depth marker color alpha beta possible-boards]
-    (if (odd? depth)
-      (let [current-board (second (first possible-boards))
-              value (minmax current-board (inc depth) (board/get-other-marker marker) (- color) alpha beta)
-              space (first (first possible-boards))
-              new-alpha (max alpha value)
-              new-map (assoc build-up-this-map space value)]
-                (if (or (>= new-alpha beta) (empty? (rest possible-boards)))
-                  new-map
-                  (alpha-beta new-map depth marker color new-alpha beta (rest possible-boards)))))
-      (let [current-board (second (first possible-boards))
-          value (minmax current-board (inc depth) (board/get-other-marker marker) (- color) alpha beta)
-          space (first (first possible-boards))
-          new-beta (min beta value)
-          new-map (assoc build-up-this-map space value)]
-            (if (or (>= alpha new-beta) (empty? (rest possible-boards)))
-              new-map
-              (alpha-beta new-map depth marker color alpha new-beta (rest possible-boards))))))
+    (if (even? depth)
+      (alpha-beta-max build-up-this-map depth marker color alpha beta possible-boards)
+      (alpha-beta-min build-up-this-map depth marker color alpha beta possible-boards))))
 
 (defn minmax
   ([board marker] (minmax board 0 marker 1 -100 100))
