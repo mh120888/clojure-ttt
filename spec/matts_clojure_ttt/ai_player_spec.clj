@@ -1,10 +1,10 @@
-(ns clojure-ttt.ai-player-spec
+(ns matts-clojure-ttt.ai-player-spec
   (:require [speclj.core :refer :all]
-            [clojure-ttt.board :as board]
-            [clojure-ttt.ai-player :as ai-player]
-            [clojure-ttt.game :as game]
-            [clojure-ttt.player :as player])
-  (:import [clojure_ttt.player ComputerPlayer]))
+            [matts-clojure-ttt.board :as board]
+            [matts-clojure-ttt.ai-player :as ai-player]
+            [matts-clojure-ttt.game :as game]
+            [matts-clojure-ttt.player :as player])
+  (:import [matts_clojure_ttt.player ComputerPlayer]))
 
 (describe "ComputerPlayer.get-move"
   (before-all

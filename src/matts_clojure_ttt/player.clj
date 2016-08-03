@@ -1,7 +1,7 @@
-(ns clojure-ttt.player
-  (:require [clojure-ttt.ai-player :as ai-player]
-            [clojure-ttt.console-ui :as console-ui]
-            [clojure-ttt.board :as board]))
+(ns matts-clojure-ttt.player
+  (:require [matts-clojure-ttt.ai-player :as ai-player]
+            [matts-clojure-ttt.console-ui :as console-ui]
+            [matts-clojure-ttt.board :as board]))
 
 (defprotocol Player
   (get-move [type board marker] [type board marker message]))

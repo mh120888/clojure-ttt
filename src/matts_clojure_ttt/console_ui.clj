@@ -1,5 +1,5 @@
-(ns clojure-ttt.console-ui
-  (:require [clojure-ttt.board :as board]))
+(ns matts-clojure-ttt.console-ui
+  (:require [matts-clojure-ttt.board :as board]))
 
 (defprotocol IOProtocol
   (io-print-line [type message])

@@ -1,10 +1,10 @@
-(ns clojure-ttt.game
+(ns matts-clojure-ttt.game
   (:gen-class)
-  (:require [clojure-ttt.board :as board]
-            [clojure-ttt.console-ui :as console-ui]
-            [clojure-ttt.player :as player])
-  (:import [clojure_ttt.console_ui ConsoleIO]
-           [clojure_ttt.player HumanPlayer ComputerPlayer]))
+  (:require [matts-clojure-ttt.board :as board]
+            [matts-clojure-ttt.console-ui :as console-ui]
+            [matts-clojure-ttt.player :as player])
+  (:import [matts_clojure_ttt.console_ui ConsoleIO]
+           [matts_clojure_ttt.player HumanPlayer ComputerPlayer]))
 
 (defn get-starting-marker
   [human-marker human-goes-first]

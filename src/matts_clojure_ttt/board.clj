@@ -1,4 +1,4 @@
-(ns clojure-ttt.board)
+(ns matts-clojure-ttt.board)
 
 (defn get-other-marker
   [marker]

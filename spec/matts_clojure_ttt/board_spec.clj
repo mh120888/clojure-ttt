@@ -1,6 +1,6 @@
-(ns clojure-ttt.board-spec
+(ns matts-clojure-ttt.board-spec
   (:require [speclj.core :refer :all]
-            [clojure-ttt.board :refer :all]))
+            [matts-clojure-ttt.board :refer :all]))
 
 (describe "Modeling a tic tac toe board"
 

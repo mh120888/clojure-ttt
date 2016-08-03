@@ -1,5 +1,5 @@
-(ns clojure-ttt.ai-player
-  (:require [clojure-ttt.board :as board]))
+(ns matts-clojure-ttt.ai-player
+  (:require [matts-clojure-ttt.board :as board]))
 
 (declare negamax)
 

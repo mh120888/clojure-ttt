@@ -1,8 +1,8 @@
-(ns clojure-ttt.generative-spec
+(ns matts-clojure-ttt.generative-spec
   (:require [speclj.core :refer :all]
-            [clojure-ttt.board :as board]
-            [clojure-ttt.player :as player])
-  (:import [clojure_ttt.player ComputerPlayer]))
+            [matts-clojure-ttt.board :as board]
+            [matts-clojure-ttt.player :as player])
+  (:import [matts_clojure_ttt.player ComputerPlayer]))
 
 (def human-marker "x")
 (def ai-marker "o")
