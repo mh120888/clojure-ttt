@@ -15,7 +15,7 @@
 (defn play-game
   [io-channel players current-marker human-marker board]
   (console-ui/print-board io-channel board)
-  (let [next-board (board/mark-space board (time (player/get-move (first players) board current-marker)) current-marker)]
+  (let [next-board (board/mark-space board (player/get-move (first players) board current-marker) current-marker)]
     (if (board/game-over? next-board)
       (console-ui/show-final-result io-channel next-board human-marker)
       (recur io-channel (reverse players) (board/get-other-marker current-marker) human-marker next-board))))
